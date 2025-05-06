@@ -1,6 +1,6 @@
 <template class="app">
     <div class="container container-input">
-        <input v-model="inputValue" placeholder="write prompt" @keydown.enter="generateImage()"/>
+        <input v-model="inputValue" placeholder="write" @keydown.enter="generateImage()"/>
         <button :disabled="isLoading" @click="generateImage()">
             <Icon icon="mdi:wand" width="70" height="70" />
         </button>
@@ -71,7 +71,7 @@ const generateImage = () => {
     border: none;
     outline: none;
     height: 100px;
-    font-size: 4rem;
+    font-size: 3rem;
     padding-left: 15px;
 }
 .container-input button {

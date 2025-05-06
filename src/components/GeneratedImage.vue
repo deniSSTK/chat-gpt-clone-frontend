@@ -42,14 +42,15 @@ const emit = defineEmits<{
 
 const isShowing = ref<boolean>(false);
 
-const downloadImageBlob = async (url: string, filename: string) => {
+const downloadImageBlob = async (url: string, defaultName = "generated-image") => {
     const response = await fetch(url);
     const blob = await response.blob();
 
+    const type = blob.type.split("/")[1] || "png";
     const blobUrl = URL.createObjectURL(blob);
     const link = document.createElement("a");
     link.href = blobUrl;
-    link.download = filename;
+    link.download = `${defaultName}.${type}`;
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
