@@ -13,7 +13,6 @@
 
 <script lang="ts" setup>
 //TODO обработка ошибок
-//TODO сделать что бы хранился промпт в картинке и писался в загрузке
 import { ref } from "vue";
 import { Icon } from '@iconify/vue';
 import GeneratedImage from "./components/GeneratedImage.vue";
@@ -73,6 +72,12 @@ const generateImage = () => {
     height: 100px;
     font-size: 3rem;
     padding-left: 15px;
+    caret-color: var(--black);
+}
+.container-input input::selection {
+    background: var(--black);
+    color: var(--white);
+    caret-color: var(--white);
 }
 .container-input button {
     height: 100px;
