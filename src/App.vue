@@ -1,36 +1,29 @@
 <template class="app">
     <div class="container container-input">
-        <input v-model="inputValue" placeholder="write prompt"/>
+        <input v-model="inputValue" placeholder="write prompt" @keydown.enter="generateImage()"/>
         <button :disabled="isLoading" @click="generateImage()">
             <Icon icon="mdi:wand" width="70" height="70" />
         </button>
     </div>
     <div class="container container-image">
         <div v-if="isLoading" class="loader-image"></div>
-        <generated-image v-for="(image, index) in images" :key="index" :image="image" @loaded="isLoading = false" :imageCount="imageCount"/>
+        <generated-image v-for="(image, index) in images" :key="index" :image="image" @loaded="isLoading = false" :index="index"/>
     </div>
 </template>
 
 <script lang="ts" setup>
-//TODO на ентер отправить
+//TODO обработка ошибок
 //TODO сделать что бы хранился промпт в картинке и писался в загрузке
 import { ref } from "vue";
 import { Icon } from '@iconify/vue';
 import GeneratedImage from "./components/GeneratedImage.vue";
 
 const inputValue = ref<string>("");
-const images = ref<string[]>([
-    "https://image.pollinations.ai/prompt/car?width=1024&height=1024&model=flux&nologo=true&private=false&enhance=false&safe=false&seed=2633570042",
-    "https://image.pollinations.ai/prompt/car?width=1024&height=1024&model=flux&nologo=true&private=false&enhance=false&safe=false&seed=2633570042",
-    "https://image.pollinations.ai/prompt/car?width=1024&height=1024&model=flux&nologo=true&private=false&enhance=false&safe=false&seed=2633570042",
-    "https://image.pollinations.ai/prompt/car?width=1024&height=1024&model=flux&nologo=true&private=false&enhance=false&safe=false&seed=2633570042",
-    "https://image.pollinations.ai/prompt/car?width=1024&height=1024&model=flux&nologo=true&private=false&enhance=false&safe=false&seed=2633570042",
-]);
+const images = ref<string[]>([]);
 const isLoading = ref<boolean>(false);
-const imageCount = ref<number>(0);
 
 const generateImage = () => {
-    if (inputValue.value === "") return;
+    if (inputValue.value === "" || isLoading.value) return;
     isLoading.value = true;
     const prompt = inputValue.value;
     inputValue.value = "";
@@ -47,7 +40,6 @@ const generateImage = () => {
             img.src = data.url;
 
             img.onload = () => {
-                imageCount.value += 1;
                 images.value = [data.url, ...images.value];
             };
         })).catch((err) => {
@@ -94,9 +86,11 @@ const generateImage = () => {
     display: flex;
     align-items: center;
     justify-content: center;
+    transition: color .3s;
 }
 .container-input button:disabled {
     cursor: not-allowed;
+    color: var(--grey);
 }
 .container-image {
     display: flex;
@@ -108,9 +102,8 @@ const generateImage = () => {
     justify-content: center;
 }
 .loader-image {
-
     width: 400px;
-    height: 400px;
+    aspect-ratio: 1;
     flex-shrink: 0;
     background-color: #e0e0e0;
     border-radius: var(--border-md);
@@ -142,6 +135,12 @@ const generateImage = () => {
     from {
         height: 0;
         opacity: 0;
+    }
+}
+@media (max-width: 850px) {
+    .loader-image {
+        width: 80vw;
+        border-radius: var(--border-md);
     }
 }
 </style>
