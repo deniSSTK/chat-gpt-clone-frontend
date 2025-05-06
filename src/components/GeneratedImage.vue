@@ -8,7 +8,7 @@
     >
     <div class="image-container" v-if="isShowing">
         <div class="button-container">
-            <button @click="downloadImageBlob(image, `generated-image-${index + 1}.png`)">
+            <button @click="downloadImageBlob(image, `generated-image-${index + 1}`)">
                 <Icon icon="material-symbols:download" width="24" height="24" class="icon-download"/>
             </button>
             <button @click="hideImage">
@@ -55,7 +55,6 @@ const downloadImageBlob = async (url: string, filename: string) => {
     document.body.removeChild(link);
     URL.revokeObjectURL(blobUrl);
 };
-
 
 const hideImage = () => {
     gsap.to(".image-container", {
