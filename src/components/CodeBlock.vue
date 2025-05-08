@@ -24,12 +24,6 @@ interface Props {
     language: string | undefined;
 }
 
-onMounted(() => {
-    console.log('new code')
-    console.log(props.code);
-    console.log(props.language);
-})
-
 const props = defineProps<Props>();
 
 const highlightedCode = ref<string>('');
