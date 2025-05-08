@@ -1,15 +1,39 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100..900;1,100..900&display=swap');
+
+/*TODO обработка ошибок*/
+/*TODO удаляет все ссылки, надо что бы просто после линии код удалялся, то есть реклама*/
+/*TODO сделать что бы работало в потоке а не сразу все соо кидало, ну типо как в розе*/
+/*TODO просто убрать часть слева боговую панель при определенном размере, и картинку не менять точнее ее размер*/
+
 :root {
   --black: black;
-  --grey: grey;
+  --grey: #272828;
   --white: white;
+  --blue: #1a416a;
+  --blue-light: #3783c8;
+  --green: #07ad07;
+  --light: #5d5d5d;
+  --red: red;
+  --grey-light: #2f2f2f;
+  --grey-dark: #191a1a;
   --white-n: 255, 255, 255;
+  --background: #212121;
+  --background-dark: #1a1a1a;
 
-  --border-sm: 5px;
-  --border-md: 15px;
+  --border-sm: 6px;
+  --border-md: calc(var(--border-sm) * 2);
+  --border-lg: calc(var(--border-sm) * 5);
+
+  --font-sm: .8rem;
+  --font-md: 1rem;
+  --font-lg: 2rem;
 }
 
 * {
+  font-family: "Roboto", sans-serif;
   box-sizing: border-box;
+  font-size: var(--font-md);
+  word-spacing: 1px;
 }
 
 head, body {
@@ -19,4 +43,27 @@ head, body {
 
 button {
   cursor: pointer;
+}
+a {
+  text-decoration: none;
+}
+.text-blue {
+  color: var(--blue);
+  font-style: oblique;
+  user-select: none;
+}
+
+.text-error {
+  color: var(--red);
+}
+.think {
+  color: var(--background);
+  max-height: 1rem;
+  overflow: hidden;
+  transition: max-height 1s, color .3s;
+}
+
+.think:hover {
+  color: var(--light);
+  max-height: 100rem;
 }

@@ -8,7 +8,7 @@
     >
     <div class="image-container" v-if="isShowing">
         <div class="button-container">
-            <button @click="downloadImageBlob(image, `generated-image-${index + 1}`)">
+            <button @click="downloadImageBlob(image, `generated-image`)">
                 <Icon icon="material-symbols:download" width="24" height="24" class="icon-download"/>
             </button>
             <button @click="hideImage">
@@ -29,12 +29,9 @@ import { Icon } from '@iconify/vue';
 import {ref} from "vue";
 import gsap from "gsap";
 
-const props = defineProps<{
+defineProps<{
     image: string;
-    index: number;
 }>();
-
-const { index } = props;
 
 const emit = defineEmits<{
     (e: 'loaded'): void;
@@ -81,6 +78,7 @@ const hideImage = () => {
     transform: scale(1.01);
 }
 .image-container {
+    z-index: 9999;
     width: 100%;
     height: 100dvh;
     position: fixed;
@@ -128,7 +126,7 @@ const hideImage = () => {
 }
 @media (max-width: 850px) {
     .image {
-        width: 80vw;
+        width: 60%;
         border-radius: var(--border-md);
     }
 }
