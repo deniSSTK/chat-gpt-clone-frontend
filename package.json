@@ -10,13 +10,17 @@
   },
   "dependencies": {
     "@iconify/vue": "^5.0.0",
+    "@types/validator": "^13.15.0",
     "gsap": "^3.13.0",
     "highlight.js": "^11.11.1",
     "marked": "^15.0.11",
+    "validator": "^13.15.0",
     "vue": "^3.5.13",
-    "vue-router": "^4.5.1"
+    "vue-router": "^4.5.1",
+    "zxcvbn": "^4.4.2"
   },
   "devDependencies": {
+    "@types/zxcvbn": "^4.4.5",
     "@vitejs/plugin-vue": "^5.2.3",
     "@vue/tsconfig": "^0.7.0",
     "typescript": "~5.8.3",

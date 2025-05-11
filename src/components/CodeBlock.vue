@@ -9,7 +9,7 @@
                 class="icon-copy"
                 @click="copyToClipboard"/>
         </div>
-        <pre v-html="highlightedCode" class="hljs"></pre>
+        <pre v-html="highlightedCode" class="hljs" />
     </div>
 </template>
 
@@ -17,7 +17,7 @@
 import { ref, onMounted, watch } from 'vue';
 import hljs from 'highlight.js';
 import 'highlight.js/styles/atom-one-dark-reasonable.min.css';
-import {Icon} from "@iconify/vue";
+import { Icon } from "@iconify/vue";
 
 interface Props {
     code: string;
@@ -32,7 +32,6 @@ const highlightCode = () => {
     const validLanguage = props.language && hljs.getLanguage(props.language) ? props.language : 'plaintext';
     highlightedCode.value = hljs.highlight(props.code, { language: validLanguage }).value;
 };
-
 
 const copyToClipboard = async () => {
     await navigator.clipboard.writeText(props.code);

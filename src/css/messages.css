@@ -12,7 +12,7 @@
     word-break: break-word;
 }
 .line {
-    border-bottom: 1px solid var(--grey);
+    border-bottom: 1px solid var(--light);
     width: 100%;
 }
 .container-message-content {

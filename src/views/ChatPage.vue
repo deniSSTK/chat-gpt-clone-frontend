@@ -17,13 +17,13 @@
                                 <span>Create Image</span>
                             </label>
                         </div>
-                        <div class="container-mode-input">
-                            <input type="radio" class="input-checkbox" id="reason" value="reason" @click="toggleModeChoose('reason')" v-model="selectedMode" />
-                            <label for="reason" class="input-checkbox-label">
-                                <Icon icon="mdi:think-outline" width="25" height="25"/>
-                                <span>Reason</span>
-                            </label>
-                        </div>
+<!--                        <div class="container-mode-input">-->
+<!--                            <input type="radio" class="input-checkbox" id="reason" value="reason" @click="toggleModeChoose('reason')" v-model="selectedMode" />-->
+<!--                            <label for="reason" class="input-checkbox-label">-->
+<!--                                <Icon icon="mdi:think-outline" width="25" height="25"/>-->
+<!--                                <span>Reason</span>-->
+<!--                            </label>-->
+<!--                        </div>-->
                     </div>
                     <button :disabled="isGenerating" @click="generateChoose()">
                         <Icon icon="line-md:arrow-up" width="60" height="60"/>
@@ -35,6 +35,8 @@
 </template>
 
 <script lang="ts" setup>
+import generateService from "../services/generate.ts";
+
 export interface iMessage {
     content: string;
     role: "system" | "user" | "assistant";
@@ -42,7 +44,7 @@ export interface iMessage {
     loadingImage?: boolean;
 }
 
-import {computed, nextTick, ref, watch} from "vue";
+import { computed, nextTick, ref, watch } from "vue";
 import { Icon } from '@iconify/vue';
 import ChatsPanel from "../components/ChatsPanel.vue";
 import Messages from "../components/Messages.vue";
@@ -55,7 +57,7 @@ const messages = ref<iMessage[]>([
         "content": "You are an assistant bot, designed to have regular conversations. Respond to questions and engage in casual dialogue. If the user explicitly mentions that they want to create an image, direct them to click the button below. Do not respond about images or pictures in text format, including links or URLs. You do not need to send any image-related text responses since image generation is handled separately."
     }
 ]);
-const isLoading = ref<boolean>(false);
+// const isLoading = ref<boolean>(false);
 const isGenerating = ref<boolean>(false);
 const selectedMode = ref<'image' | 'reason' | null>(null);
 
@@ -64,6 +66,8 @@ const messagesContainerRef = ref<HTMLDivElement | null>(null);
 const visibleMessages = computed(() =>
     messages.value.filter(msg => msg.role !== 'system')
 );
+
+const { generateImage, generateText } = generateService();
 
 watch(messages, async () => {
     await nextTick();
@@ -77,70 +81,20 @@ const generateChoose = () => {
     switch (selectedMode.value) {
         case 'image':
             selectedMode.value = null;
-            generateImage();
+            generateImage({
+                messages,
+                inputValue,
+                isGenerating,
+            });
             break;
         default:
-            generateText()
+            generateText({
+                messages,
+                inputValue,
+                isGenerating,
+            })
             break;
     }
-}
-
-const generateImage = () => {
-    if (inputValue.value === "" || isLoading.value) return;
-    isGenerating.value = true;
-    const prompt = inputValue.value;
-    messages.value = [
-        ...messages.value,
-        {role: "user", content: inputValue.value},
-        {role: "assistant", content: '', loadingImage: true},
-    ];
-    inputValue.value = "";
-
-    setTimeout(() => {
-        fetch("https://model-fast-api-w4du.onrender.com/generate", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-                'accept': 'application/json',
-            },
-            body: JSON.stringify({ prompt })
-        }).then(res => res.json().then(data => {
-            const img = new Image();
-            img.src = data.url;
-
-            img.onload = () => {
-                messages.value[messages.value.length - 1] =  {role: "assistant", content: "", imageUrl: data.url};
-            };
-        })).catch(() => {
-            isLoading.value = false;
-        }).finally(() => isGenerating.value = false)
-    }, 200)
-}
-
-const generateText = () => {
-    if (inputValue.value === "" || isLoading.value) return;
-    messages.value = [
-        ...messages.value,
-        {role: "user", content: inputValue.value}
-    ];
-    inputValue.value = "";
-    isGenerating.value = true;
-    fetch('https://model-fast-api-w4du.onrender.com/chat'  , {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json",
-            'accept': 'application/json',
-        },
-        body: JSON.stringify({
-            messages: messages.value
-        })
-    })
-        .then(response => response.json())
-        .then(data => {
-            messages.value.push({content: data.response, role: "assistant"})
-        })
-        .catch(() => {
-        }).finally(() => isGenerating.value = false)
 }
 
 const toggleModeChoose = (mode: 'reason' | 'image' | null) => {

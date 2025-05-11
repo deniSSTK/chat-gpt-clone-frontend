@@ -1,6 +1,8 @@
 <template>
-    <router-view>
-    </router-view>
+    <ErrorDisplay />
+    <router-view />
 </template>
 
-<script></script>
+<script setup lang="ts">
+import ErrorDisplay from "./components/ErrorDisplay.vue";
+</script>
