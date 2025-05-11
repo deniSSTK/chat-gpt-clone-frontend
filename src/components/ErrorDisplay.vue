@@ -58,7 +58,7 @@ const removeError = (id: number) => {
         opacity: 0;
         transform: translateX(100%);
     }
-    25%, 75% {
+    10%, 90% {
         opacity: 1;
         transform: translateX(0%);
     }
