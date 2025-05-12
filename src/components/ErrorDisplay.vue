@@ -16,7 +16,7 @@ import useErrorStore from "../../use/useErrorStore";
 
 const { errors } = useErrorStore();
 
-const removeError = (id: number) => {
+const removeError = (id: string) => {
     const index = errors.findIndex((error) => error.id === id);
     if (index !== -1) errors.splice(index, 1);
 };

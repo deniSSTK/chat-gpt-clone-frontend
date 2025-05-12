@@ -1,11 +1,16 @@
 import { reactive } from 'vue';
 
+interface iError {
+    id: string;
+    message: string;
+}
+
 const state = reactive({
-    errors: [] as string[]
+    errors: [] as iError[]
 });
 
 const addError = (message: string) => {
-    const id = Date.now();
+    const id = Date.now().toString();
     state.errors.push({ id, message });
 
     setTimeout(() => {
