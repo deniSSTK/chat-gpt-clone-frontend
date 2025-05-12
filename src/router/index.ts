@@ -10,7 +10,7 @@ const { checkAuth } = authService();
 const { addError } = useErrorStore();
 
 const routes = [
-    { path: '/c', name: "chat", component: ChatPage },
+    { path: '/c', redirect: () => `/c/${crypto.randomUUID()}-${Date.now()}` },
     { path: '/c/:id', name: "chat-id", component: ChatPage },
     { path: '/log-in', name: 'log-in', component: LogInPage },
     { path: '/sign-up', name: 'sign-up', component: SignUpPage },
@@ -35,7 +35,7 @@ router.beforeEach(async (to, _, next) => {
             next()
         }
     } catch (e) {
-        addError(e)
+        addError(e as string)
         next('/log-in')
     }
 })

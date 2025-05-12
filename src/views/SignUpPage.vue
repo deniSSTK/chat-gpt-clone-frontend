@@ -74,6 +74,8 @@ import zxcvbn from 'zxcvbn';
 
 const router = useRouter();
 
+const { signUp } = authService();
+
 const emailRef = ref<string>('');
 const passwordRef = ref<string>('');
 const confirmPasswordRef = ref<string>('');
@@ -85,8 +87,6 @@ const canViewConfirmPassword = ref<boolean>(false);
 const passwordScore = ref<
     'low' | 'mid' | 'high'
 >('low');
-
-const { signUp } = authService();
 
 watch(passwordRef, (newPassword) => {
     const result = zxcvbn(newPassword);

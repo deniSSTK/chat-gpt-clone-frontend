@@ -22,21 +22,24 @@
                 </template>
             </template>
         </div>
-        <span v-if="message.role === 'assistant'" class="line"></span>
+        <div class="generating-loading"
+             v-if="message.generatingText"
+        ></div>
+        <span v-if="message.role === 'assistant'" class="line" />
     </div>
 </template>
 
 <script setup lang="ts">
 import GeneratedImage from "./GeneratedImage.vue";
-import { defineProps } from "vue"
+import {defineProps} from "vue"
 import type { iMessage } from "../views/ChatPage.vue"
 import { marked } from "marked";
 import CodeBlock from "./CodeBlock.vue";
 import "../css/messages.css"
 
 defineProps<{
-    visibleMessages: iMessage[]
-}>()
+    visibleMessages: iMessage[],
+}>();
 
 const formatMessage = (content: string) => {
     let thinkingPart = "";
@@ -95,5 +98,5 @@ const splitContent = (content: string) => {
     }
 
     return parts;
-};
+}
 </script>

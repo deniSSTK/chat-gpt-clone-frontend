@@ -117,7 +117,7 @@
 }
 .generating-loading {
     width: 70%;
-    min-height: 60dvh;
+    height: 30px;
     position: relative;
     animation: show-generating-loading .3s;
 }

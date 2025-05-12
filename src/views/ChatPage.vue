@@ -1,13 +1,20 @@
 <template class="app">
     <div class="content">
-        <ChatsPanel />
+        <KeepAlive>
+            <ChatsPanel />
+        </KeepAlive>
         <div class="chat">
             <div class="container container-messages" ref="messagesContainerRef">
-                <Messages :visibleMessages="visibleMessages"/>
-                <div class="generating-loading" v-if="isGenerating && !messages[messages.length - 1].loadingImage" />
+                <Messages
+                    :visibleMessages="visibleMessages"/>
             </div>
             <div class="container container-input">
-                <input v-model="inputValue" placeholder="write" @keydown.enter="generateChoose()" class="input-text"/>
+                <input
+                    v-model="inputValue"
+                    placeholder="Ask anything"
+                    @keydown.enter="generateChoose()"
+                    class="input-text"
+                />
                 <div class=footer-input-buttons-container>
                     <div class="container-mode-inputs">
                         <div class="container-mode-input">
@@ -25,7 +32,11 @@
 <!--                            </label>-->
 <!--                        </div>-->
                     </div>
-                    <button :disabled="isGenerating" @click="generateChoose()">
+                    <button :disabled="
+                                isGeneratingImage
+                                || loading
+                                || messages.length >= 2 && messages[messages.length - 1].generatingText"
+                            @click="generateChoose()">
                         <Icon icon="line-md:arrow-up" width="60" height="60"/>
                     </button>
                 </div>
@@ -34,40 +45,54 @@
     </div>
 </template>
 
-<script lang="ts" setup>
-import generateService from "../services/generate.ts";
-
+<script setup lang="ts">
 export interface iMessage {
     content: string;
     role: "system" | "user" | "assistant";
     imageUrl?: string;
     loadingImage?: boolean;
+    generatingText?: boolean;
 }
 
-import { computed, nextTick, ref, watch } from "vue";
+import generateService from "../services/generate.ts";
+import { computed, nextTick, ref, watch, onMounted } from "vue";
 import { Icon } from '@iconify/vue';
 import ChatsPanel from "../components/ChatsPanel.vue";
 import Messages from "../components/Messages.vue";
 import '../css/page-chat.css';
+import { useRoute, useRouter } from 'vue-router';
+import chatsService from "../services/chats.ts";
+
+const chatId = useRoute().params.id as string;
+const router = useRouter();
+
+const { generateImage, generateText } = generateService();
+const { chatCheck, getAllMessages } = chatsService();
 
 const inputValue = ref<string>("");
+const isGeneratingImage = ref<boolean>(false);
+const loading = ref<boolean>(false);
+const selectedMode = ref<'image' | 'reason' | null>(null);
+
+const messagesContainerRef = ref<HTMLDivElement | null>(null);
+
 const messages = ref<iMessage[]>([
     {
         "role": "system",
         "content": "You are an assistant bot, designed to have regular conversations. Respond to questions and engage in casual dialogue. If the user explicitly mentions that they want to create an image, direct them to click the button below. Do not respond about images or pictures in text format, including links or URLs. You do not need to send any image-related text responses since image generation is handled separately."
     }
 ]);
-// const isLoading = ref<boolean>(false);
-const isGenerating = ref<boolean>(false);
-const selectedMode = ref<'image' | 'reason' | null>(null);
-
-const messagesContainerRef = ref<HTMLDivElement | null>(null);
 
 const visibleMessages = computed(() =>
     messages.value.filter(msg => msg.role !== 'system')
 );
 
-const { generateImage, generateText } = generateService();
+onMounted(async () => {
+    const data = await chatCheck(
+        chatId
+    )
+    if (!data && messages.value.length !== 1) await router.push('/c')
+})
 
 watch(messages, async () => {
     await nextTick();
@@ -76,22 +101,25 @@ watch(messages, async () => {
     }
 });
 
-const generateChoose = () => {
-    if(isGenerating.value) return;
+const generateChoose = async () => {
+    if(isGeneratingImage.value) return;
+    const userInputValue = inputValue.value;
+    inputValue.value = "";
     switch (selectedMode.value) {
         case 'image':
             selectedMode.value = null;
-            generateImage({
+            await generateImage({
+                chatId,
+                userInput: userInputValue,
                 messages,
-                inputValue,
-                isGenerating,
+                isGenerating: isGeneratingImage,
             });
             break;
         default:
-            generateText({
+            await generateText({
+                chatId,
+                userInput: userInputValue,
                 messages,
-                inputValue,
-                isGenerating,
             })
             break;
     }
@@ -105,4 +133,14 @@ const toggleModeChoose = (mode: 'reason' | 'image' | null) => {
         selectedMode.value = mode;
     }
 }
+
+// watch(() => route.params.id )
+
+onMounted(async () => {
+    const data = await getAllMessages(
+        chatId,
+        loading
+    );
+    if (data.length !== 0 && !data.error) messages.value = [...messages.value, ...data];
+})
 </script>

@@ -38,7 +38,7 @@ const removeError = (id: number) => {
 
 .error-message {
     width: 200px;
-    height: 50px;
+    height: fit-content;
     font-size: var(--font-md);
     background-color: var(--red);
     color: var(--white);
