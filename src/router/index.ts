@@ -10,6 +10,7 @@ const { checkAuth } = authService();
 const { addError } = useErrorStore();
 
 const routes = [
+    { path: '/', redirect: () => `/c` },
     { path: '/c', redirect: () => `/c/${crypto.randomUUID()}-${Date.now()}` },
     { path: '/c/:id', name: "chat-id", component: ChatPage },
     { path: '/log-in', name: 'log-in', component: LogInPage },
