@@ -28,7 +28,6 @@ const router = createRouter({
 router.beforeEach(async (to, _, next) => {
     try {
         const isMaintenance = await maintenanceCheck();
-        console.log(isMaintenance);
         if (isMaintenance && to.name !== 'maintenance') {
             return next('/maintenance');
         }
