@@ -28,11 +28,14 @@ const router = createRouter({
 router.beforeEach(async (to, _, next) => {
     try {
         const isMaintenance = await maintenanceCheck();
-        if (isMaintenance && to.name !== 'maintenance') {
+        if (isMaintenance && import.meta.env.PROD && to.name !== 'maintenance') {
             return next('/maintenance');
         }
-        if (isMaintenance && to.name === 'maintenance') {
+        else if (isMaintenance && import.meta.env.PROD && to.name === 'maintenance') {
             return next();
+        }
+        else if (!isMaintenance && to.name === 'maintenance') {
+            return next('/c');
         }
 
         const isAuth = await checkAuth();

@@ -158,6 +158,14 @@
         transform: scale(.8);
     }
 }
+@media (max-width: 750px) {
+    .chat {
+        width: 100%;
+    }
+    .container-input {
+        width: 100%;
+    }
+}
 @media (max-width: 800px) {
     .input-checkbox-label span {
         display: none;

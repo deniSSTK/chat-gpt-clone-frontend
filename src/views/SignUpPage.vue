@@ -56,6 +56,7 @@
             >
                 {{ loading ? "Loading..." : "Create Account"  }}
             </button>
+            <a href="/log-in">Already have an account?</a>
         </div>
     </div>
 </template>

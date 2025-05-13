@@ -11,12 +11,22 @@
                 placeholder="input email"
                 v-model="emailRef"
             >
-            <input
-                class="input-auth"
-                placeholder="input password"
-                v-model="passwordRef"
-                maxlength="16"
-            >
+            <div class="password-input-container">
+                <input
+                    class="input-auth password"
+                    placeholder="input password"
+                    v-model="passwordRef"
+                    maxlength="16"
+                    :type="canViewPassword ? 'text' : 'password'"
+                >
+                <input type="checkbox" id="checkbox-password" v-model="canViewPassword">
+                <label for="checkbox-password">
+                    <Icon
+                        :icon="canViewPassword ? 'iconamoon:eye-thin' : 'iconoir:eye-closed'"
+                        width="30"
+                        height="30"/>
+                </label>
+            </div>
             <button
                 class="button-auth"
                 :disabled="
@@ -38,6 +48,7 @@ import {ref} from 'vue'
 import validator from 'validator'
 import { useRouter } from "vue-router";
 import authentication from "../services/authentication.ts";
+import {Icon} from "@iconify/vue";
 
 const { logIn } = authentication();
 
@@ -46,6 +57,7 @@ const router = useRouter();
 const emailRef = ref<string>('');
 const passwordRef = ref<string>('');
 const loading = ref<boolean>(false);
+const canViewPassword = ref<boolean>(false);
 
 const logInRouter = async () => {
     const data = await logIn(

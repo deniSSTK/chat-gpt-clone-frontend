@@ -1,8 +1,6 @@
 <template class="app">
     <div class="content">
-        <KeepAlive>
-            <ChatsPanel />
-        </KeepAlive>
+        <ChatsPanel />
         <div class="chat">
             <div class="container container-messages" ref="messagesContainerRef">
                 <Messages
@@ -133,8 +131,6 @@ const toggleModeChoose = (mode: 'reason' | 'image' | null) => {
         selectedMode.value = mode;
     }
 }
-
-// watch(() => route.params.id )
 
 onMounted(async () => {
     const data = await getAllMessages(

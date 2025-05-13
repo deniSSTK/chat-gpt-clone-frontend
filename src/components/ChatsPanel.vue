@@ -1,5 +1,8 @@
 <template>
+    <Icon class="open-left-panel-button" icon="line-md:menu" width="30" height="30" @click="panelManipulation"/>
+    <div class="left-panel-container-background"></div>
     <div class="left-panel-container">
+        <Icon class="left-panel-close-icon" icon="material-symbols:close" width="30" height="30" @click="panelManipulation"/>
         <div class="chats">
             <a href="/c" class="chat-panel-button new-chat">
                 <Icon icon="ic:outline-create" width="24" height="24" /> New Chat
@@ -13,10 +16,11 @@
 </template>
 
 <script setup lang="ts">
-import { onBeforeMount , ref } from 'vue';
+import { onBeforeMount , ref, onMounted, onUnmounted } from 'vue';
 import "../css/panel-chat.css";
 import { Icon } from "@iconify/vue"
 import chatsService from "../services/chats.ts";
+import gsap from "gsap";
 
 const { getChats } = chatsService();
 
@@ -27,6 +31,7 @@ interface iChat {
 }
 
 const chats = ref<iChat[]>([]);
+const showPanel = ref<boolean>(false);
 
 onBeforeMount(async () => {
     const cacheChatsList = localStorage.getItem("cache/chat-list");
@@ -37,4 +42,66 @@ onBeforeMount(async () => {
     chats.value = data.sort((a: iChat, b: iChat) => b.lastMessageTime - a.lastMessageTime);
     localStorage.setItem("cache/chat-list", JSON.stringify(chats.value));
 })
+
+const panelManipulation = () => {
+    if (showPanel.value) {
+        gsap.to(".left-panel-container-background", {
+            opacity: 0,
+            duration: .3,
+        })
+        gsap.to(".left-panel-container", {
+            width: 0,
+            opacity: 0,
+            duration: .3,
+            onComplete: () => {
+                showPanel.value = false
+            }
+        })
+    }
+    else {
+        gsap.to(".left-panel-container-background", {
+            opacity: .5,
+            duration: .3,
+        })
+        gsap.to(".left-panel-container", {
+            width: 260,
+            opacity: 1,
+            duration: .3,
+            onComplete: () => {
+                showPanel.value = true
+            }
+        })
+    }
+}
+
+const handleResize = () => {
+    if (window.innerWidth > 750) {
+        gsap.set(".left-panel-container", {
+            width: 260,
+            opacity: 1
+        });
+        gsap.set(".left-panel-container-background", {
+            opacity: 0
+        });
+        showPanel.value = true;
+    } else {
+        gsap.set(".left-panel-container", {
+            width: 0,
+            opacity: 0
+        });
+        gsap.set(".left-panel-container-background", {
+            opacity: 0
+        });
+        showPanel.value = false;
+    }
+};
+
+onMounted(() => {
+    window.addEventListener('resize', handleResize);
+    handleResize();
+});
+
+onUnmounted(() => {
+    window.removeEventListener('resize', handleResize);
+});
 </script>
