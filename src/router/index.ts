@@ -39,7 +39,6 @@ router.beforeEach(async (to, _, next) => {
         }
 
         const isAuth = await checkAuth();
-        addError(`${isAuth}`)
         if ((to.name === 'log-in' || to.name === 'sign-up') && isAuth) {
             return next('/c');
         }

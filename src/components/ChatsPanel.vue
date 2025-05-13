@@ -1,6 +1,6 @@
 <template>
     <Icon class="open-left-panel-button" icon="line-md:menu" width="30" height="30" @click="panelManipulation"/>
-    <div class="left-panel-container-background"></div>
+    <div v-if="showPanel" class="left-panel-container-background"></div>
     <div class="left-panel-container">
         <Icon class="left-panel-close-icon" icon="material-symbols:close" width="30" height="30" @click="panelManipulation"/>
         <div class="chats">
@@ -45,12 +45,12 @@ onBeforeMount(async () => {
 
 const panelManipulation = () => {
     if (showPanel.value) {
-        gsap.to(".left-panel-container-background", {
+        gsap.to(".left-panel-container", {
+            width: 0,
             opacity: 0,
             duration: .3,
         })
-        gsap.to(".left-panel-container", {
-            width: 0,
+        gsap.to(".left-panel-container-background", {
             opacity: 0,
             duration: .3,
             onComplete: () => {
@@ -59,6 +59,7 @@ const panelManipulation = () => {
         })
     }
     else {
+        showPanel.value = true
         gsap.to(".left-panel-container-background", {
             opacity: .5,
             duration: .3,
@@ -67,9 +68,6 @@ const panelManipulation = () => {
             width: 260,
             opacity: 1,
             duration: .3,
-            onComplete: () => {
-                showPanel.value = true
-            }
         })
     }
 }
@@ -81,7 +79,7 @@ const handleResize = () => {
             opacity: 1
         });
         gsap.set(".left-panel-container-background", {
-            opacity: 0
+            opacity: 0,
         });
         showPanel.value = true;
     } else {
@@ -90,7 +88,7 @@ const handleResize = () => {
             opacity: 0
         });
         gsap.set(".left-panel-container-background", {
-            opacity: 0
+            opacity: 0,
         });
         showPanel.value = false;
     }
