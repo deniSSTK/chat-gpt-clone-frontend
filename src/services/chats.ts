@@ -42,8 +42,8 @@ const chatsService = () => {
                     }
                 }
             })
-        } catch (error) {
-            addError(error as string);
+        } catch (error: Error) {
+            addError(error.message);
         }
     }
 
@@ -64,8 +64,8 @@ const chatsService = () => {
             })
 
             return await response.json();
-        } catch(error) {
-            addError(error as string);
+        } catch(error: Error) {
+            addError(error.message);
             return false;
         }
     }
@@ -81,8 +81,8 @@ const chatsService = () => {
                 }
             })
             return await response.json();
-        } catch (error) {
-            addError(error as string);
+        } catch (error: Error) {
+            addError(error.message);
         }
     }
 
@@ -104,9 +104,8 @@ const chatsService = () => {
             })
 
             return await response.json();
-        } catch (error) {
-            console.error(error)
-            addError(error as string);
+        } catch (error: Error) {
+            addError(error.message);
         } finally {
             loading.value = false;
         }

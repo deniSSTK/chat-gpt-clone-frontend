@@ -36,8 +36,8 @@ const authService = () => {
                 addError(data.error)
                 return false;
             }
-        } catch(error) {
-            addError(error as string)
+        } catch(error: Error) {
+            addError(error.message)
             return false;
         } finally {
             loading.value = false;
@@ -71,8 +71,8 @@ const authService = () => {
                 addError(data.error)
                 return false;
             }
-        } catch(error) {
-            addError(error as string)
+        } catch(error: Error) {
+            addError(error.message)
         } finally {
             loading.value = false;
         }
@@ -86,8 +86,8 @@ const authService = () => {
             })
             const data: iAuthCheck = await response.json()
             return data.isAuthenticated;
-        } catch (error) {
-            addError(error as string)
+        } catch (error: Error) {
+            addError(error.message)
         }
     }
 
@@ -98,8 +98,8 @@ const authService = () => {
             })
             const data = await response.json();
             return data.maintenance
-        } catch (error) {
-            addError(error as string)
+        } catch (error: Error) {
+            addError(error.message)
         }
     }
 

@@ -47,8 +47,8 @@ router.beforeEach(async (to, _, next) => {
         }
 
         return next();
-    } catch (e) {
-        addError(e as string)
+    } catch (error: Error) {
+        addError(e.message)
         return next('/log-in');
     }
 });

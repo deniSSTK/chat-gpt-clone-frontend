@@ -61,9 +61,9 @@ const generateService = () => {
                     messages,
                 )
             }, 200)
-        } catch (error) {
+        } catch (error: Error) {
             isGenerating.value = false;
-            addError(error as string)
+            addError(error.message)
         }
     }
 
@@ -100,13 +100,13 @@ const generateService = () => {
                 chatId,
                 messages,
             )
-        } catch (error) {
-            addError(error as string)
+        } catch (error: Error) {
+            addError(error.message)
             const userMessage = messages.value[messages.value.length - 2];
             if (userMessage.generatingText) {
                 messages.value[messages.value.length - 2] = {...userMessage, generatingText: false};
             }
-            addError(error as string)
+            addError(error.message)
         }
     }
 
