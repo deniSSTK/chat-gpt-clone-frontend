@@ -31,7 +31,6 @@
 
 <script setup lang="ts">
 import GeneratedImage from "./GeneratedImage.vue";
-import {defineProps} from "vue"
 import type { iMessage } from "../views/ChatPage.vue"
 import { marked } from "marked";
 import CodeBlock from "./CodeBlock.vue";
