@@ -164,6 +164,15 @@
     }
     .container-input {
         width: 100%;
+        bottom: -5px;
+    }
+    .input-text {
+        width: 100%;
+        border-radius: 0;
+    }
+    .footer-input-buttons-container {
+        width: 100%;
+        border-radius: 0;
     }
 }
 @media (max-width: 800px) {
