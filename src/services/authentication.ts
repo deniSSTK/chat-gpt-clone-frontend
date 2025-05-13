@@ -16,7 +16,7 @@ const authService = () => {
         loading.value = true;
 
         try {
-            const res = await fetch('http://localhost:3000/authentication/create-user', {
+            const res = await fetch('https://ai-backend-production-15be.up.railway.app/authentication/create-user', {
                 method: 'POST',
                 credentials: 'include',
                 headers: {
@@ -51,7 +51,7 @@ const authService = () => {
     ) {
         loading.value = true;
         try {
-            const response = await fetch('http://localhost:3000/authentication/log-in', {
+            const response = await fetch('https://ai-backend-production-15be.up.railway.app/authentication/log-in', {
                 method: 'POST',
                 credentials: 'include',
                 headers: {
@@ -80,11 +80,13 @@ const authService = () => {
 
     async function checkAuth() {
         try {
-            const response = await fetch('http://localhost:3000/authentication/check-auth', {
+            const response = await fetch('https://ai-backend-production-15be.up.railway.app/authentication/check-auth', {
                 method: 'GET',
                 credentials: 'include',
             })
+            console.log(response)
             const data: iAuthCheck = await response.json()
+            console.log(data)
             return data.isAuthenticated;
         } catch (error) {
             addError(error as string)

@@ -51,7 +51,7 @@ const chatsService = () => {
         chatId: string,
     ) {
         try {
-            const response = await fetch('http://localhost:3000/chats/chat-check', {
+            const response = await fetch('https://ai-backend-production-15be.up.railway.app/chats/chat-check', {
                 method: 'POST',
                 credentials: 'include',
                 headers: {
@@ -72,7 +72,7 @@ const chatsService = () => {
 
     async function getChats() {
         try {
-            const response = await fetch('http://localhost:3000/chats/get-chats', {
+            const response = await fetch('https://ai-backend-production-15be.up.railway.app/chats/get-chats', {
                 method: 'GET',
                 credentials: 'include',
                 headers: {
@@ -92,7 +92,7 @@ const chatsService = () => {
     ) {
         loading.value = true;
         try {
-            const response = await fetch('http://localhost:3000/chats/get-messages', {
+            const response = await fetch('https://ai-backend-production-15be.up.railway.app/chats/get-messages', {
                 method: 'POST',
                 headers: {
                     "Content-Type": "application/json",
