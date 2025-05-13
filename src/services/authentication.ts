@@ -16,7 +16,7 @@ const authService = () => {
         loading.value = true;
 
         try {
-            const res = await fetch('https://ai-backend-production-15be.up.railway.app/authentication/create-user', {
+            const res = await fetch(`${import.meta.env.VITE_NEST_API_URL}/authentication/create-user`, {
                 method: 'POST',
                 credentials: 'include',
                 headers: {
@@ -51,7 +51,7 @@ const authService = () => {
     ) {
         loading.value = true;
         try {
-            const response = await fetch('https://ai-backend-production-15be.up.railway.app/authentication/log-in', {
+            const response = await fetch(`${import.meta.env.VITE_NEST_API_URL}/authentication/log-in`, {
                 method: 'POST',
                 credentials: 'include',
                 headers: {
@@ -80,14 +80,24 @@ const authService = () => {
 
     async function checkAuth() {
         try {
-            const response = await fetch('https://ai-backend-production-15be.up.railway.app/authentication/check-auth', {
+            const response = await fetch(`${import.meta.env.VITE_NEST_API_URL}/authentication/check-auth`, {
                 method: 'GET',
                 credentials: 'include',
             })
-            console.log(response)
             const data: iAuthCheck = await response.json()
-            console.log(data)
             return data.isAuthenticated;
+        } catch (error) {
+            addError(error as string)
+        }
+    }
+
+    async function maintenanceCheck() {
+        try {
+            const response = await fetch(`${import.meta.env.VITE_NEST_API_URL}/authentication/check-maintenance`, {
+                method: 'GET',
+            })
+            const data = await response.json();
+            return data.maintenance
         } catch (error) {
             addError(error as string)
         }
@@ -96,7 +106,8 @@ const authService = () => {
     return {
         checkAuth,
         signUp,
-        logIn
+        logIn,
+        maintenanceCheck
     }
 }
 

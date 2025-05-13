@@ -1,12 +1,13 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import ChatPage from "../views/ChatPage.vue";
 import LogInPage from "../views/LogInPage.vue";
+import Maintenance from "../views/Maintenance.vue";
 import SignUpPage from "../views/SignUpPage.vue";
 import authService from "../services/authentication.ts";
 import NotFoundPage from "../views/NotFoundPage.vue";
 import useErrorStore from "../../use/useErrorStore.ts";
 
-const { checkAuth } = authService();
+const { checkAuth, maintenanceCheck } = authService();
 const { addError } = useErrorStore();
 
 const routes = [
@@ -16,6 +17,7 @@ const routes = [
     { path: '/log-in', name: 'log-in', component: LogInPage },
     { path: '/sign-up', name: 'sign-up', component: SignUpPage },
     { path: '/:pathMatch(.*)*', name: 'not-found', component: NotFoundPage },
+    { path: '/maintenance', name: 'maintenance', component: Maintenance }
 ]
 
 const router = createRouter({
@@ -25,20 +27,28 @@ const router = createRouter({
 
 router.beforeEach(async (to, _, next) => {
     try {
+        const isMaintenance = await maintenanceCheck();
+        console.log(isMaintenance);
+        if (isMaintenance && to.name !== 'maintenance') {
+            return next('/maintenance');
+        }
+        if (isMaintenance && to.name === 'maintenance') {
+            return next();
+        }
+
         const isAuth = await checkAuth();
         if ((to.name === 'log-in' || to.name === 'sign-up') && isAuth) {
-            next('/c')
+            return next('/c');
         }
-        else if (!isAuth && to.name !== 'log-in' && to.name !== 'sign-up' && to.name !== 'not-found') {
-            next('/log-in');
+        if (!isAuth && to.name !== 'log-in' && to.name !== 'sign-up' && to.name !== 'not-found') {
+            return next('/log-in');
         }
-        else {
-            next()
-        }
+
+        return next();
     } catch (e) {
         addError(e as string)
-        next('/log-in')
+        return next('/log-in');
     }
-})
+});
 
 export default router;
