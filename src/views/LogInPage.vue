@@ -47,10 +47,8 @@ import '../css/auth.css';
 import {ref} from 'vue'
 import validator from 'validator'
 import { useRouter } from "vue-router";
-import authentication from "../services/authentication.ts";
-import {Icon} from "@iconify/vue";
-
-const { logIn } = authentication();
+import { logIn } from "../services/authentication.ts";
+import { Icon } from "@iconify/vue";
 
 const router = useRouter();
 

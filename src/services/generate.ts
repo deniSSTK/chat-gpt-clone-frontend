@@ -2,10 +2,9 @@ import type {iMessage} from "../views/ChatPage.vue";
 import type {Ref} from "vue";
 
 import useErrorStore from "../../use/useErrorStore.ts";
-import chatsService from "./chats.ts";
+import { saveMessage } from "./chats.ts";
 
 const { addError } = useErrorStore();
-const { saveMessage } = chatsService();
 
 interface iGenerateFunction {
     messages: Ref<iMessage[]>,
@@ -61,7 +60,7 @@ const generateService = () => {
                     messages,
                 )
             }, 200)
-        } catch (error: Error) {
+        } catch (error: any) {
             isGenerating.value = false;
             addError(error.message)
         }
@@ -100,7 +99,7 @@ const generateService = () => {
                 chatId,
                 messages,
             )
-        } catch (error: Error) {
+        } catch (error: any) {
             addError(error.message)
             const userMessage = messages.value[messages.value.length - 2];
             if (userMessage.generatingText) {

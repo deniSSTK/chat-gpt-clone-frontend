@@ -75,8 +75,22 @@
     display: none;
 }
 
+.button-menu-container {
+    display: none;
+}
+
 @media (max-width: 750px) {
+    .button-menu-container {
+        display: flex;
+        width: 100%;
+        height: 50px;
+        justify-content: space-between;
+        align-items: flex-start;
+        padding: 0 15px;
+    }
+
     .open-left-panel-button {
+        cursor: pointer;
         display: block;
         position: fixed;
         top: 15px;
@@ -101,7 +115,5 @@
     .left-panel-close-icon {
         cursor: pointer;
         display: block;
-        align-self: flex-start;
-        margin-left: 15px;
     }
 }

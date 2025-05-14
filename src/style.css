@@ -7,7 +7,8 @@
 /*TODO сделать что бы работало в потоке а не сразу все соо кидало, ну типо как в розе*/
 
 :root {
-  --black: black;
+  --black: var(--black-n);
+  --black-n: 0, 0, 0;
   --grey: #272828;
   --white: white;
   --blue: #1a416a;
@@ -15,7 +16,7 @@
   --green: #07ad07;
   --light: #5d5d5d;
   --very-light: #d9d9d9;
-  --red: red;
+  --red: #ff4242;
   --yellow: #dede27;
   --grey-light: #2f2f2f;
   --grey-dark: #191a1a;

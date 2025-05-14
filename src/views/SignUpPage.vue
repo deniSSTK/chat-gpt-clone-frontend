@@ -66,7 +66,7 @@ import {ref, watch} from 'vue'
 import { useRouter } from "vue-router";
 import { Icon } from "@iconify/vue";
 
-import authService from "../services/authentication.ts";
+import { signUp } from "../services/authentication.ts";
 import '../css/auth.css';
 import '../css/auth-sign-up.css'
 
@@ -74,8 +74,6 @@ import validator from 'validator'
 import zxcvbn from 'zxcvbn';
 
 const router = useRouter();
-
-const { signUp } = authService();
 
 const emailRef = ref<string>('');
 const passwordRef = ref<string>('');

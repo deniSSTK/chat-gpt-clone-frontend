@@ -4,119 +4,129 @@ import type { Ref } from 'vue';
 
 const { addError } = useErrorStore()
 
-const chatsService = () => {
-    async function saveMessage(
-        messages: iMessage[],
-        chatId: string,
-        messagesRef?: Ref<iMessage[]>,
-        isGenerating?: Ref<boolean>,
-    ) {
-        try {
-            if (messagesRef) {
-                const userMessage = messagesRef.value[messagesRef.value.length - 2];
-                if (userMessage.generatingText) {
-                    messagesRef.value[messagesRef.value.length - 2] = {...userMessage, generatingText: false};
-                    messagesRef.value[messagesRef.value.length - 1] = {...messagesRef.value[messagesRef.value.length - 1], generatingText: true};
-                }
+async function saveMessage(
+    messages: iMessage[],
+    chatId: string,
+    messagesRef?: Ref<iMessage[]>,
+    isGenerating?: Ref<boolean>,
+) {
+    try {
+        if (messagesRef) {
+            const userMessage = messagesRef.value[messagesRef.value.length - 2];
+            if (userMessage.generatingText) {
+                messagesRef.value[messagesRef.value.length - 2] = {...userMessage, generatingText: false};
+                messagesRef.value[messagesRef.value.length - 1] = {...messagesRef.value[messagesRef.value.length - 1], generatingText: true};
             }
-            await fetch(`${import.meta.env.VITE_NEST_API_URL}/chats/save-message`, {
-                method: 'POST',
-                credentials: 'include',
-                headers: {
-                    "Content-Type": "application/json",
-                    'accept': 'application/json',
-                },
-                body: JSON.stringify({
-                    messages,
-                    chatId,
-                })
-            }).then(res => res.json()).then((data) => {
-                if (data) {
-                    if (isGenerating) {
-                        isGenerating.value = false;
-                    } else if (messagesRef) {
-                        const userMessage = messagesRef.value[messagesRef.value.length - 1];
-                        if (userMessage.generatingText) {
-                            messagesRef.value[messagesRef.value.length - 1] = {...userMessage, generatingText: false};
-                        }
+        }
+        await fetch(`${import.meta.env.VITE_NEST_API_URL}/chats/save-message`, {
+            method: 'POST',
+            credentials: 'include',
+            headers: {
+                "Content-Type": "application/json",
+                'accept': 'application/json',
+            },
+            body: JSON.stringify({
+                messages,
+                chatId,
+            })
+        }).then(res => res.json()).then((data) => {
+            if (data) {
+                if (isGenerating) {
+                    isGenerating.value = false;
+                } else if (messagesRef) {
+                    const userMessage = messagesRef.value[messagesRef.value.length - 1];
+                    if (userMessage.generatingText) {
+                        messagesRef.value[messagesRef.value.length - 1] = {...userMessage, generatingText: false};
                     }
                 }
-            })
-        } catch (error: Error) {
-            addError(error.message);
-        }
-    }
-
-    async function chatCheck(
-        chatId: string,
-    ) {
-        try {
-            const response = await fetch(`${import.meta.env.VITE_NEST_API_URL}/chats/chat-check`, {
-                method: 'POST',
-                credentials: 'include',
-                headers: {
-                    "Content-Type": "application/json",
-                    'accept': 'application/json',
-                },
-                body: JSON.stringify({
-                    chatId,
-                })
-            })
-
-            return await response.json();
-        } catch(error: Error) {
-            addError(error.message);
-            return false;
-        }
-    }
-
-    async function getChats() {
-        try {
-            const response = await fetch(`${import.meta.env.VITE_NEST_API_URL}/chats/get-chats`, {
-                method: 'GET',
-                credentials: 'include',
-                headers: {
-                    "Content-Type": "application/json",
-                    'accept': 'application/json',
-                }
-            })
-            return await response.json();
-        } catch (error: Error) {
-            addError(error.message);
-        }
-    }
-
-    async function getAllMessages(
-        chatId: string,
-        loading: Ref<boolean>,
-    ) {
-        loading.value = true;
-        try {
-            const response = await fetch(`${import.meta.env.VITE_NEST_API_URL}/chats/get-messages`, {
-                method: 'POST',
-                headers: {
-                    "Content-Type": "application/json",
-                    'accept': 'application/json',
-                },
-                body: JSON.stringify({
-                    chatId,
-                })
-            })
-
-            return await response.json();
-        } catch (error: Error) {
-            addError(error.message);
-        } finally {
-            loading.value = false;
-        }
-    }
-
-    return {
-        saveMessage,
-        chatCheck,
-        getChats,
-        getAllMessages
+            }
+        })
+    } catch (error: any) {
+        addError(error.message);
     }
 }
 
-export default chatsService;
+async function chatCheck(
+    chatId: string,
+) {
+    try {
+        const response = await fetch(`${import.meta.env.VITE_NEST_API_URL}/chats/chat-check`, {
+            method: 'POST',
+            credentials: 'include',
+            headers: {
+                "Content-Type": "application/json",
+                'accept': 'application/json',
+            },
+            body: JSON.stringify({
+                chatId,
+            })
+        })
+
+        return await response.json();
+    } catch(error: any) {
+        addError(error.message);
+        return false;
+    }
+}
+
+async function getChats() {
+    try {
+        const response = await fetch(`${import.meta.env.VITE_NEST_API_URL}/chats/get-chats`, {
+            method: 'GET',
+            credentials: 'include',
+            headers: {
+                "Content-Type": "application/json",
+                'accept': 'application/json',
+            }
+        })
+        return await response.json();
+    } catch (error: any) {
+        addError(error.message);
+    }
+}
+
+async function getAllMessages(
+    chatId: string,
+    loading: Ref<boolean>,
+) {
+    loading.value = true;
+    try {
+        const response = await fetch(`${import.meta.env.VITE_NEST_API_URL}/chats/get-messages`, {
+            method: 'POST',
+            headers: {
+                "Content-Type": "application/json",
+                'accept': 'application/json',
+            },
+            body: JSON.stringify({
+                chatId,
+            })
+        })
+
+        return await response.json();
+    } catch (error: any) {
+        addError(error.message);
+    } finally {
+        loading.value = false;
+    }
+}
+
+const deleteUserChats = async () => {
+    try {
+        const response = await fetch(`${import.meta.env.VITE_NEST_API_URL}/chats/delete-user-chats`, {
+            method: 'DELETE',
+            credentials: 'include',
+        })
+
+        return await response.json();
+    } catch (error: any) {
+        addError(error.message);
+    }
+}
+
+export {
+    getAllMessages,
+    getChats,
+    saveMessage,
+    chatCheck,
+    deleteUserChats
+};

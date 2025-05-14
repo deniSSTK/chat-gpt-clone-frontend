@@ -1,8 +1,12 @@
 <template>
     <Icon class="open-left-panel-button" icon="line-md:menu" width="30" height="30" @click="panelManipulation"/>
-    <div v-if="showPanel" class="left-panel-container-background"></div>
+    <div v-if="showPanel" class="left-panel-container-background"
+         @click="panelManipulation"
+    ></div>
     <div class="left-panel-container">
-        <Icon class="left-panel-close-icon" icon="material-symbols:close" width="30" height="30" @click="panelManipulation"/>
+        <div class="button-menu-container">
+            <Icon class="left-panel-close-icon" icon="material-symbols:close" width="30" height="30" @click="panelManipulation"/>
+        </div>
         <div class="chats">
             <a href="/c" class="chat-panel-button new-chat">
                 <Icon icon="ic:outline-create" width="24" height="24" /> New Chat
@@ -19,10 +23,8 @@
 import { onBeforeMount , ref, onMounted, onUnmounted } from 'vue';
 import "../css/panel-chat.css";
 import { Icon } from "@iconify/vue"
-import chatsService from "../services/chats.ts";
+import { getChats } from "../services/chats.ts";
 import gsap from "gsap";
-
-const { getChats } = chatsService();
 
 interface iChat {
     chatName: string;

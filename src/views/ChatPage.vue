@@ -1,4 +1,5 @@
 <template class="app">
+    <Settings />
     <div class="content">
         <ChatsPanel />
         <div class="chat">
@@ -59,13 +60,13 @@ import ChatsPanel from "../components/ChatsPanel.vue";
 import Messages from "../components/Messages.vue";
 import '../css/page-chat.css';
 import { useRoute, useRouter } from 'vue-router';
-import chatsService from "../services/chats.ts";
+import { chatCheck, getAllMessages } from "../services/chats.ts";
+import Settings from "../components/Settings.vue";
 
 const chatId = useRoute().params.id as string;
 const router = useRouter();
 
 const { generateImage, generateText } = generateService();
-const { chatCheck, getAllMessages } = chatsService();
 
 const inputValue = ref<string>("");
 const isGeneratingImage = ref<boolean>(false);

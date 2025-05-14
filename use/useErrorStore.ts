@@ -3,15 +3,16 @@ import { reactive } from 'vue';
 interface iError {
     id: string;
     message: string;
+    type: "error" | "success" | "warn";
 }
 
 const state = reactive({
     errors: [] as iError[]
 });
 
-const addError = (message: string) => {
+const addError = (message: string, type: "error" | "success" | "warn"="error") => {
     const id = Date.now().toString();
-    state.errors.push({ id, message });
+    state.errors.push({ id, message, type });
 
     setTimeout(() => {
         const index = state.errors.findIndex((error) => error.id === id);

@@ -3,11 +3,10 @@ import ChatPage from "../views/ChatPage.vue";
 import LogInPage from "../views/LogInPage.vue";
 import Maintenance from "../views/Maintenance.vue";
 import SignUpPage from "../views/SignUpPage.vue";
-import authService from "../services/authentication.ts";
+import { checkAuth, maintenanceCheck } from "../services/authentication.ts";
 import NotFoundPage from "../views/NotFoundPage.vue";
 import useErrorStore from "../../use/useErrorStore.ts";
 
-const { checkAuth, maintenanceCheck } = authService();
 const { addError } = useErrorStore();
 
 const routes = [
@@ -47,8 +46,8 @@ router.beforeEach(async (to, _, next) => {
         }
 
         return next();
-    } catch (error: Error) {
-        addError(e.message)
+    } catch (error: any) {
+        addError(error.message)
         return next('/log-in');
     }
 });

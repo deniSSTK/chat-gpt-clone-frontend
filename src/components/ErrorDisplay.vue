@@ -4,6 +4,10 @@
             v-for="(error) in errors"
             :key="error.id"
             class="error-message"
+            :class="{
+                'success': error.type === 'success',
+                'warn': error.type === 'warn'
+            }"
             @animationend="removeError(error.id)"
         >
             {{ error.message }}
@@ -30,10 +34,11 @@ const removeError = (id: string) => {
     display: flex;
     flex-direction: column;
     gap: 10px;
-    z-index: 9999;
+    z-index: 10000;
     overflow-y: auto;
     overflow-x: hidden;
     width: fit-content;
+    user-select: none;
 }
 
 .error-message {
@@ -52,6 +57,15 @@ const removeError = (id: string) => {
     animation: error-animation 4s;
     margin-right: 15px;
 }
+
+.success {
+    background-color: var(--green);
+}
+
+.warn {
+    background-color: var(--yellow);
+}
+
 
 @keyframes error-animation {
     0%, 100% {

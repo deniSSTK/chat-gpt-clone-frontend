@@ -84,7 +84,7 @@ const hideImage = () => {
     position: fixed;
     top: 0;
     left: 0;
-    backdrop-filter: blur(15px);
+    backdrop-filter: blur(5px);
     background: rgba(0, 0, 0, 0.8);
     animation: show .3s;
     display: flex;
