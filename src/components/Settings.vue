@@ -98,7 +98,7 @@ const router = useRouter();
 const { setLoading } = useLoading();
 const { addError } = useErrorStore()
 
-const showSettings = ref<boolean>(true);
+const showSettings = ref<boolean>(false);
 const loading = ref<boolean>(false);
 const chosenCategory = ref<"general" | "information">("general");
 
