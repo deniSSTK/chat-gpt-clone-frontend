@@ -4,7 +4,7 @@ const { addError } = useErrorStore()
 
 const getPersonalizationStyle = async () => {
     try {
-        const response = await fetch("http://localhost:3000/personalization/get-personalization-style", {
+        const response = await fetch(`${import.meta.env.VITE_NEST_API_URL}/personalization/get-personalization-style`, {
             method: "GET",
             credentials: "include",
         })
@@ -22,7 +22,7 @@ const getPersonalizationStyle = async () => {
 
 const updatePersonalizationStyle = async (style: string) => {
     try {
-        const response = await fetch("http://localhost:3000/personalization/update-personalization-style", {
+        const response = await fetch(`${import.meta.env.VITE_NEST_API_URL}/personalization/update-personalization-style`, {
             method: "POST",
             credentials: "include",
             headers: {
