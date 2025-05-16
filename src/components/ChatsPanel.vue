@@ -4,15 +4,15 @@
          @click="panelManipulation"
     ></div>
     <div class="left-panel-container">
+        <div class="button-menu-container">
+            <Icon class="left-panel-close-icon" icon="material-symbols:close" width="30" height="30" @click="panelManipulation"/>
+        </div>
         <input
             type="text"
             v-model="searchInput"
             placeholder="Search..."
             class="left-panel-search-input"
         >
-        <div class="button-menu-container">
-            <Icon class="left-panel-close-icon" icon="material-symbols:close" width="30" height="30" @click="panelManipulation"/>
-        </div>
         <div class="chats">
             <a href="/c" class="chat-panel-button new-chat">
                 <Icon icon="ic:outline-create" width="24" height="24" /> New Chat
@@ -40,7 +40,7 @@
 </template>
 
 <script setup lang="ts">
-import {onBeforeMount, ref, onMounted, onUnmounted, watch} from 'vue';
+import { ref, onMounted, onUnmounted, watch } from 'vue';
 import "../css/panel-chat.css";
 import { Icon } from "@iconify/vue";
 import { getChats } from "../services/chats.ts";
@@ -57,7 +57,7 @@ const searchChats = ref<iChat[]>([]);
 const showPanel = ref<boolean>(false);
 const searchInput = ref<string>("");
 
-onBeforeMount(async () => {
+onMounted(async () => {
     const cacheChatsList = localStorage.getItem("cache/chat-list");
     if (cacheChatsList) {
         chats.value = JSON.parse(cacheChatsList);
