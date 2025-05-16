@@ -1,7 +1,7 @@
 import type {iMessage} from "../views/ChatPage.vue";
 import type {Ref} from "vue";
 
-import useErrorStore from "../../use/useErrorStore.ts";
+import useErrorStore from "../use/useErrorStore.ts";
 import { saveMessage } from "./chats.ts";
 
 const { addError } = useErrorStore();
@@ -58,6 +58,7 @@ const generateService = () => {
                     ],
                     chatId,
                     messages,
+                    isGenerating
                 )
             }, 200)
         } catch (error: any) {

@@ -1,5 +1,5 @@
 import type {Ref} from "vue";
-import useErrorStore from "../../use/useErrorStore.ts";
+import useErrorStore from "../use/useErrorStore.ts";
 
 const { addError } = useErrorStore();
 
@@ -65,7 +65,7 @@ async function logIn(
 
         const data = await response.json();
 
-        if (data.status === 200) {return true;}
+        if (data.status === 200) {return true}
         else {
             addError(data.error)
             return false;

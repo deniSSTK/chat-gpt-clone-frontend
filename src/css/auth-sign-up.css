@@ -25,3 +25,9 @@
     background-color: var(--green);
     width: 100%;
 }
+
+@media (max-width: 750px) {
+    .password-score {
+        width: 80%;
+    }
+}

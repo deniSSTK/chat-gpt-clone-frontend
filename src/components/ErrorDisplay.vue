@@ -16,7 +16,7 @@
 </template>
 
 <script setup lang="ts">
-import useErrorStore from "../../use/useErrorStore";
+import useErrorStore from "../use/useErrorStore";
 
 const { errors } = useErrorStore();
 

@@ -38,6 +38,7 @@
                 </div>
                 <div class="settings-params">
                     <div v-if="chosenCategory === 'general'">
+                        <PersonalizationStyles />
                             <div class="settings-params-button-container">
                                 <span>
                                     Log out on this device
@@ -60,20 +61,7 @@
                             </div>
                     </div>
                     <div v-else-if="chosenCategory === 'information'">
-                        <span>1.1.0</span>
-                        <ul>
-                            <li>Settings</li>
-                            <li>Delete chats</li>
-                            <li>Log out</li>
-                            <li>Fix errors</li>
-                        </ul>
-                        <span>1.0.0</span>
-                        <ul>
-                            <li>Text ai assistant</li>
-                            <li>Image generator</li>
-                            <li>Authorization</li>
-                            <li>Chats history</li>
-                        </ul>
+                        <UpdateInformation />
                     </div>
                 </div>
             </div>
@@ -89,9 +77,11 @@ import gsap from "gsap"
 import { ref } from "vue";
 import { logOut } from "../services/authentication.ts";
 import { useRouter } from "vue-router";
-import useLoading from "../../use/useLoading.ts";
-import useErrorStore from "../../use/useErrorStore.ts";
+import useLoading from "../use/useLoading.ts";
+import useErrorStore from "../use/useErrorStore.ts";
 import {deleteUserChats} from "../services/chats.ts";
+import UpdateInformation from "./UpdateInformation.vue";
+import PersonalizationStyles from "./PersonalizationStyles.vue";
 
 const router = useRouter();
 

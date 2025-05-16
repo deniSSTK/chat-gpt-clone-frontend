@@ -7,16 +7,12 @@
 /*TODO сделать что бы работало в потоке а не сразу все соо кидало, ну типо как в розе*/
 
 :root {
-  --black: var(--black-n);
+  --black: rgb(var(--black-n));
   --black-n: 0, 0, 0;
   --grey: #272828;
   --white: white;
-  --blue: #1a416a;
-  --blue-light: #3783c8;
-  --green: #07ad07;
   --light: #5d5d5d;
   --very-light: #d9d9d9;
-  --red: #ff4242;
   --yellow: #dede27;
   --grey-light: #2f2f2f;
   --grey-dark: #191a1a;
@@ -24,7 +20,20 @@
   --background: #212121;
   --background-dark: #1a1a1a;
 
-  --border-sm: 6px;
+  --blue: #1a416a;
+  --blue-light: #3783c8;
+  --violet: #6366F1;
+  --violet-light: #E0E7FF;
+  --amber: #F59E0B;
+  --amber-light: #FEF3C7;
+  --green: #10B981;
+  --green-light: #D1FAE5;
+  --red: #EF4444;
+  --red-light: #FECACA;
+  --purple: #8B5CF6;
+  --purple-light: #EDE9FE;
+
+  --border-sm: 8px;
   --border-md: calc(var(--border-sm) * 2);
   --border-lg: calc(var(--border-sm) * 5);
 
@@ -69,8 +78,24 @@ a {
   max-height: 1rem;
   overflow: hidden;
   transition: max-height 1s, color .3s;
+  opacity: .8;
 }
 
 .think:hover {
   max-height: 200dvh;
+}
+
+
+*::-webkit-scrollbar {
+  width: 8px;
+  cursor: pointer;
+}
+*::-webkit-scrollbar-track {
+  background: var(--grey);
+}
+*::-webkit-scrollbar-thumb {
+  background: var(--grey-light);
+}
+*::-webkit-scrollbar-thumb:hover {
+  background: var(--white);
 }

@@ -4,7 +4,7 @@
 </template>
 
 <script setup lang="ts">
-import useLoading from "../../use/useLoading.ts";
+import useLoading from "../use/useLoading.ts";
 import { Icon } from "@iconify/vue"
 
 const { loading } = useLoading();

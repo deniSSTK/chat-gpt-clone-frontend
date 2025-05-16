@@ -65,7 +65,9 @@
 import {ref, watch} from 'vue'
 import { useRouter } from "vue-router";
 import { Icon } from "@iconify/vue";
+import useLoading from "../use/useLoading.ts";
 
+const { setLoading } = useLoading();
 import { signUp } from "../services/authentication.ts";
 import '../css/auth.css';
 import '../css/auth-sign-up.css'
@@ -101,11 +103,13 @@ watch(passwordRef, (newPassword) => {
 });
 
 const signUpRouter = async () => {
+    setLoading(true)
     const data = await signUp(
         emailRef.value,
         passwordRef.value,
         loading
     )
+    setLoading(false)
     if (data) await router.push('/c');
     emailRef.value = '';
     passwordRef.value = '';

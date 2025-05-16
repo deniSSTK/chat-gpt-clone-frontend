@@ -45,6 +45,21 @@
 </template>
 
 <script setup lang="ts">
+import { Icon } from '@iconify/vue';
+import { useRoute, useRouter } from 'vue-router';
+import { computed, nextTick, ref, watch, onMounted } from "vue";
+
+import generateService from "../services/generate.ts";
+import { chatCheck, getAllMessages } from "../services/chats.ts";
+import {getPersonalizationStyle} from "../services/personalization.ts";
+
+import '../css/page-chat.css';
+import "../css/generated-image.css";
+import Messages from "../components/Messages.vue";
+import Settings from "../components/Settings.vue";
+import ChatsPanel from "../components/ChatsPanel.vue";
+import {personalityStylesConfig} from "../config/botSettingsConfig.ts";
+
 export interface iMessage {
     content: string;
     role: "system" | "user" | "assistant";
@@ -52,16 +67,6 @@ export interface iMessage {
     loadingImage?: boolean;
     generatingText?: boolean;
 }
-
-import generateService from "../services/generate.ts";
-import { computed, nextTick, ref, watch, onMounted } from "vue";
-import { Icon } from '@iconify/vue';
-import ChatsPanel from "../components/ChatsPanel.vue";
-import Messages from "../components/Messages.vue";
-import '../css/page-chat.css';
-import { useRoute, useRouter } from 'vue-router';
-import { chatCheck, getAllMessages } from "../services/chats.ts";
-import Settings from "../components/Settings.vue";
 
 const chatId = useRoute().params.id as string;
 const router = useRouter();
@@ -77,8 +82,8 @@ const messagesContainerRef = ref<HTMLDivElement | null>(null);
 
 const messages = ref<iMessage[]>([
     {
-        "role": "system",
-        "content": "You are an assistant bot, designed to have regular conversations. Respond to questions and engage in casual dialogue. If the user explicitly mentions that they want to create an image, direct them to click the button below. Do not respond about images or pictures in text format, including links or URLs. You do not need to send any image-related text responses since image generation is handled separately."
+        role: 'system',
+        content: `If the user explicitly mentions that they want to create an image, direct them to click the button below. Do not respond about images or pictures in text format, including links or URLs. You do not need to send any image-related text responses since image generation is handled separately.`,
     }
 ]);
 
@@ -101,7 +106,7 @@ watch(messages, async () => {
 });
 
 const generateChoose = async () => {
-    if(isGeneratingImage.value) return;
+    if(isGeneratingImage.value || messages.value[messages.value.length - 1].generatingText) return;
     const userInputValue = inputValue.value;
     inputValue.value = "";
     switch (selectedMode.value) {
@@ -134,6 +139,10 @@ const toggleModeChoose = (mode: 'reason' | 'image' | null) => {
 }
 
 onMounted(async () => {
+    const personalizationStyle = await getPersonalizationStyle();
+    if (personalizationStyle) {
+        messages.value.unshift({role: 'system', content: personalityStylesConfig[personalizationStyle]})
+    }
     const data = await getAllMessages(
         chatId,
         loading

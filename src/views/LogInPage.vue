@@ -49,7 +49,9 @@ import validator from 'validator'
 import { useRouter } from "vue-router";
 import { logIn } from "../services/authentication.ts";
 import { Icon } from "@iconify/vue";
+import useLoading from "../use/useLoading.ts";
 
+const { setLoading } = useLoading();
 const router = useRouter();
 
 const emailRef = ref<string>('');
@@ -58,11 +60,13 @@ const loading = ref<boolean>(false);
 const canViewPassword = ref<boolean>(false);
 
 const logInRouter = async () => {
+    setLoading(true);
     const data = await logIn(
         emailRef.value,
         passwordRef.value,
         loading
     )
+    setLoading(false);
     if (data) await router.push('/c')
     emailRef.value = ''
     passwordRef.value = ''

@@ -4,6 +4,12 @@
          @click="panelManipulation"
     ></div>
     <div class="left-panel-container">
+        <input
+            type="text"
+            v-model="searchInput"
+            placeholder="Search..."
+            class="left-panel-search-input"
+        >
         <div class="button-menu-container">
             <Icon class="left-panel-close-icon" icon="material-symbols:close" width="30" height="30" @click="panelManipulation"/>
         </div>
@@ -11,8 +17,22 @@
             <a href="/c" class="chat-panel-button new-chat">
                 <Icon icon="ic:outline-create" width="24" height="24" /> New Chat
             </a>
+            <a href="/gallery" class="chat-panel-button new-chat">
+                <Icon icon="solar:gallery-bold" width="24" height="24" /> Gallery
+            </a>
             <strong class="strong-title">chat history</strong>
-            <div class="chat-content" v-for="(chat, index) in chats" :key="index">
+            <div class="chat-content"
+                 v-if="searchInput === ''"
+                 v-for="(chat, index) in chats"
+                 :key="index"
+            >
+                <a class="chat-panel-button" :href="`/c/${chat.chatId}`">{{chat.chatName}}</a>
+            </div>
+            <div class="chat-content"
+                 v-if="searchInput !== ''"
+                 v-for="(chat, index) in searchChats"
+                 :key="index"
+            >
                 <a class="chat-panel-button" :href="`/c/${chat.chatId}`">{{chat.chatName}}</a>
             </div>
         </div>
@@ -20,9 +40,9 @@
 </template>
 
 <script setup lang="ts">
-import { onBeforeMount , ref, onMounted, onUnmounted } from 'vue';
+import {onBeforeMount, ref, onMounted, onUnmounted, watch} from 'vue';
 import "../css/panel-chat.css";
-import { Icon } from "@iconify/vue"
+import { Icon } from "@iconify/vue";
 import { getChats } from "../services/chats.ts";
 import gsap from "gsap";
 
@@ -33,7 +53,9 @@ interface iChat {
 }
 
 const chats = ref<iChat[]>([]);
+const searchChats = ref<iChat[]>([]);
 const showPanel = ref<boolean>(false);
+const searchInput = ref<string>("");
 
 onBeforeMount(async () => {
     const cacheChatsList = localStorage.getItem("cache/chat-list");
@@ -95,6 +117,12 @@ const handleResize = () => {
         showPanel.value = false;
     }
 };
+
+watch((searchInput), () => {
+    if (searchInput.value !== "") {
+        searchChats.value = chats.value.filter((chat: iChat) => chat.chatName.includes(searchInput.value))
+    }
+})
 
 onMounted(() => {
     window.addEventListener('resize', handleResize);

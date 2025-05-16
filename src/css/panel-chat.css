@@ -16,6 +16,7 @@
     flex-direction: column;
     text-align: left;
     overflow-y: auto;
+    gap: 5px;
 }
 .chat-content {
     width: 100%;
@@ -77,6 +78,16 @@
 
 .button-menu-container {
     display: none;
+}
+
+.left-panel-search-input {
+    width: 240px;
+    padding: 5px 15px;
+    border: none;
+    outline: none;
+    border-radius: var(--border-sm);
+    background: var(--grey-light);
+    color: var(--white);
 }
 
 @media (max-width: 750px) {

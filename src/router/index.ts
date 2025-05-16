@@ -1,22 +1,42 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import ChatPage from "../views/ChatPage.vue";
-import LogInPage from "../views/LogInPage.vue";
-import Maintenance from "../views/Maintenance.vue";
-import SignUpPage from "../views/SignUpPage.vue";
-import { checkAuth, maintenanceCheck } from "../services/authentication.ts";
-import NotFoundPage from "../views/NotFoundPage.vue";
-import useErrorStore from "../../use/useErrorStore.ts";
+import { checkAuth } from "../services/authentication.ts";
+import useErrorStore from "../use/useErrorStore.ts";
 
 const { addError } = useErrorStore();
 
 const routes = [
     { path: '/', redirect: () => `/c` },
     { path: '/c', redirect: () => `/c/${crypto.randomUUID()}-${Date.now()}` },
-    { path: '/c/:id', name: "chat-id", component: ChatPage },
-    { path: '/log-in', name: 'log-in', component: LogInPage },
-    { path: '/sign-up', name: 'sign-up', component: SignUpPage },
-    { path: '/:pathMatch(.*)*', name: 'not-found', component: NotFoundPage },
-    { path: '/maintenance', name: 'maintenance', component: Maintenance }
+    {
+        path: '/c/:id',
+        name: "chat-id",
+        component: () => import('../views/ChatPage.vue'),
+    },
+    {
+        path: '/log-in',
+        name: 'log-in',
+        component: () => import('../views/LogInPage.vue'),
+    },
+    {
+        path: '/sign-up',
+        name: 'sign-up',
+        component: () => import('../views/SignUpPage.vue'),
+    },
+    {
+        path: '/maintenance',
+        name: 'maintenance',
+        component: () => import('../views/Maintenance.vue'),
+    },
+    {
+        path: '/gallery',
+        name: 'gallery',
+        component: () => import('../views/Gallery.vue'),
+    },
+    {
+        path: '/:pathMatch(.*)*',
+        name: 'not-found',
+        component: () => import('../views/NotFoundPage.vue'),
+    },
 ]
 
 const router = createRouter({
@@ -26,16 +46,16 @@ const router = createRouter({
 
 router.beforeEach(async (to, _, next) => {
     try {
-        const isMaintenance = await maintenanceCheck();
-        if (isMaintenance && import.meta.env.PROD && to.name !== 'maintenance') {
-            return next('/maintenance');
-        }
-        else if (isMaintenance && import.meta.env.PROD && to.name === 'maintenance') {
-            return next();
-        }
-        else if (!isMaintenance && to.name === 'maintenance') {
-            return next('/c');
-        }
+        // const isMaintenance = await maintenanceCheck();
+        // if (isMaintenance && to.name !== 'maintenance') {
+        //     return next('/maintenance');
+        // }
+        // else if (isMaintenance && to.name === 'maintenance') {
+        //     return next();
+        // }
+        // else if (!isMaintenance && to.name === 'maintenance') {
+        //     return next('/c');
+        // }
 
         const isAuth = await checkAuth();
         if ((to.name === 'log-in' || to.name === 'sign-up') && isAuth) {

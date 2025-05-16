@@ -1,4 +1,4 @@
-import useErrorStore from "../../use/useErrorStore.ts";
+import useErrorStore from "../use/useErrorStore.ts";
 import type {iMessage} from "../views/ChatPage.vue";
 import type { Ref } from 'vue';
 
@@ -18,7 +18,8 @@ async function saveMessage(
                 messagesRef.value[messagesRef.value.length - 1] = {...messagesRef.value[messagesRef.value.length - 1], generatingText: true};
             }
         }
-        await fetch(`${import.meta.env.VITE_NEST_API_URL}/chats/save-message`, {
+
+        const response = await fetch(`${import.meta.env.VITE_NEST_API_URL}/chats/save-message`, {
             method: 'POST',
             credentials: 'include',
             headers: {
@@ -29,18 +30,27 @@ async function saveMessage(
                 messages,
                 chatId,
             })
-        }).then(res => res.json()).then((data) => {
-            if (data) {
-                if (isGenerating) {
-                    isGenerating.value = false;
-                } else if (messagesRef) {
-                    const userMessage = messagesRef.value[messagesRef.value.length - 1];
-                    if (userMessage.generatingText) {
-                        messagesRef.value[messagesRef.value.length - 1] = {...userMessage, generatingText: false};
-                    }
+        })
+
+        const data = await response.json();
+
+        const last = messages[messages.length - 1];
+        const prev = messages[messages.length - 2];
+
+        if (last?.imageUrl && prev?.content) {
+            await saveImageToGallery(last.imageUrl, prev.content);
+        }
+
+        if (data) {
+            if (isGenerating) {
+                isGenerating.value = false;
+            } else if (messagesRef) {
+                const userMessage = messagesRef.value[messagesRef.value.length - 1];
+                if (userMessage.generatingText) {
+                    messagesRef.value[messagesRef.value.length - 1] = {...userMessage, generatingText: false};
                 }
             }
-        })
+        }
     } catch (error: any) {
         addError(error.message);
     }
@@ -123,10 +133,44 @@ const deleteUserChats = async () => {
     }
 }
 
+const saveImageToGallery = async (imageUrl: string, prompt: string) => {
+    try {
+        const response = await fetch(`${import.meta.env.VITE_NEST_API_URL}/chats/save-image-to-gallery`, {
+            method: 'POST',
+            credentials: 'include',
+            headers: {
+                "Content-Type": "application/json",
+                'accept': 'application/json',
+            },
+            body: JSON.stringify({
+                imageUrl,
+                prompt
+            })
+        })
+
+        return await response.json();
+    } catch (error: any) {
+        addError(error.message);
+    }
+}
+
+const getAllImages = async () => {
+    const response = await fetch(`${import.meta.env.VITE_NEST_API_URL}/chats/get-all-images`, {
+        method: 'GET',
+        credentials: 'include',
+        headers: {
+            "Content-Type": "application/json",
+            'accept': 'application/json',
+        }
+    })
+    return await response.json();
+}
+
 export {
     getAllMessages,
     getChats,
     saveMessage,
     chatCheck,
-    deleteUserChats
+    deleteUserChats,
+    getAllImages
 };
