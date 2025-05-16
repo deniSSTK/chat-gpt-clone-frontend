@@ -5,6 +5,7 @@
             <li>Image gallery</li>
             <li>Bot personalization styles</li>
             <li>Bug fixes</li>
+            <li>Style changes</li>
         </ul>
         <span>1.1.0</span>
         <ul>
