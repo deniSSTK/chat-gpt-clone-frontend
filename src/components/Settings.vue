@@ -56,13 +56,11 @@
                                 <button class="settings-params-button delete"
                                     @click="deleteChats()"
                                 >
-                                    Delete
+                                    Delete&nbsp;<span>all chats</span>
                                 </button>
                             </div>
                     </div>
-                    <div v-else-if="chosenCategory === 'information'">
-                        <UpdateInformation />
-                    </div>
+                    <UpdateInformation v-else-if="chosenCategory === 'information'"/>
                 </div>
             </div>
         </div>
