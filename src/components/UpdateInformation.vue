@@ -1,9 +1,14 @@
 <template>
     <div class="update-information-container">
+        <span>1.2.1</span>
+        <ul>
+            <li>Bug fixes</li>
+        </ul>
         <span>1.2.0</span>
         <ul>
             <li>Image gallery</li>
             <li>Bot personalization styles</li>
+            <li>Chat search</li>
             <li>Bug fixes</li>
             <li>Style changes</li>
         </ul>
