@@ -14,6 +14,9 @@
             class="left-panel-search-input"
         >
         <div class="chats">
+            <a :href="`/p/${userId}`" class="chat-panel-button new-chat">
+                <Icon icon="gg:profile" width="24" height="24" /> Profile
+            </a>
             <a href="/c" class="chat-panel-button new-chat">
                 <Icon icon="ic:outline-create" width="24" height="24" /> New Chat
             </a>
@@ -45,12 +48,15 @@ import "../css/panel-chat.css";
 import { Icon } from "@iconify/vue";
 import { getChats } from "../services/chats.ts";
 import gsap from "gsap";
+import {getUserId} from "../services/authentication.ts";
 
 interface iChat {
     chatName: string;
     chatId: string;
     lastMessageTime: number;
 }
+
+const userId = ref<string>();
 
 const chats = ref<iChat[]>([]);
 const searchChats = ref<iChat[]>([]);
@@ -128,6 +134,10 @@ onMounted(() => {
     window.addEventListener('resize', handleResize);
     handleResize();
 });
+
+onMounted(async () => {
+    userId.value =  await getUserId();
+})
 
 onUnmounted(() => {
     window.removeEventListener('resize', handleResize);

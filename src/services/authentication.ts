@@ -90,13 +90,25 @@ async function checkAuth() {
     }
 }
 
-async function maintenanceCheck() {
+// async function maintenanceCheck() {
+//     try {
+//         const response = await fetch(`${import.meta.env.VITE_NEST_API_URL}/authentication/check-maintenance`, {
+//             method: 'GET',
+//         })
+//         const data = await response.json();
+//         return data.maintenance
+//     } catch (error: any) {
+//         addError(error.message)
+//     }
+// }
+
+async function getUserId() {
     try {
-        const response = await fetch(`${import.meta.env.VITE_NEST_API_URL}/authentication/check-maintenance`, {
+        const response = await fetch(`${import.meta.env.VITE_NEST_API_URL}/authentication/get-user-id`, {
             method: 'GET',
+            credentials: 'include',
         })
-        const data = await response.json();
-        return data.maintenance
+        return await response.text();
     } catch (error: any) {
         addError(error.message)
     }
@@ -119,10 +131,36 @@ async function logOut(loading?: Ref<boolean>) {
     }
 }
 
+async function getUserProfileInfo(
+    userId: string,
+    canEditPage: boolean
+) {
+    try {
+        const response = await fetch(`${import.meta.env.VITE_NEST_API_URL}/authentication/get-user-profile-info/${userId}`, {
+            method: 'POST',
+            body: JSON.stringify({canEditPage}),
+            headers: {
+                "Content-Type": "application/json",
+                'accept': 'application/json',
+            },
+        })
+
+        if (!response.ok) {
+            const errData = await response.json();
+            throw new Error(errData.message || 'Something went wrong');
+        }
+
+        return await response.json();
+    } catch (error: any) {
+        addError(error.message)
+    }
+}
+
 export {
-    signUp,
     logIn,
+    signUp,
+    logOut,
+    getUserId,
     checkAuth,
-    maintenanceCheck,
-    logOut
+    getUserProfileInfo
 };

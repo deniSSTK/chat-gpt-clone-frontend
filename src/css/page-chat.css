@@ -130,6 +130,10 @@
     background-color: var(--white);
     animation: blink 1s infinite ease-in;
 }
+.manipulate-buttons-container {
+    display: flex;
+    gap: 15px;
+}
 @keyframes move {
     0% {
         left: -200%;

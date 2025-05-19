@@ -164,7 +164,7 @@ const getAllImages = async () => {
         }
     })
     return await response.json();
-}
+};
 
 export {
     getAllMessages,

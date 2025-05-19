@@ -1,5 +1,10 @@
 <template>
     <div class="update-information-container">
+        <span>1.3.0</span>
+        <ul>
+            <li>Profile system</li>
+            <li>Download chat to pdf</li>
+        </ul>
         <span>1.2.1</span>
         <ul>
             <li>Bug fixes</li>

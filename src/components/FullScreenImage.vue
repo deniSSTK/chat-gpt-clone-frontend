@@ -1,6 +1,17 @@
 <template>
     <div class="image-container" v-if="isShowing">
-        <div class="button-container">
+        <div class="button-container left-button-container">
+            <button v-if="addToPublic || removeFromPublic" @click="updateUserIconContainer()">
+                <Icon icon="clarity:avatar-outline-alerted" width="24" height="24" />
+            </button>
+            <button v-if="addToPublic" @click="addImageToPublicGalleryContainer()">
+                <Icon icon="solar:gallery-add-outline" width="24" height="24" />
+            </button>
+            <button v-if="removeFromPublic" @click="removeImageFromPublicGalleryContainer()">
+                <Icon icon="mdi:eye-remove-outline" width="24" height="24" />
+            </button>
+        </div>
+        <div class="button-container right-button-container">
             <button @click="downloadImageBlob(image, `generated-image`)">
                 <Icon icon="material-symbols:download" width="24" height="24" class="icon-download"/>
             </button>
@@ -19,13 +30,21 @@
 <script setup lang="ts">
 import {Icon} from "@iconify/vue";
 import gsap from "gsap";
+import {addImageToPublicGallery, removeImageFromPublicGallery, updateUserIcon} from "../services/personalization.ts";
+import useErrorStore from "../use/useErrorStore.ts";
+import useLoading from "../use/useLoading.ts";
 
-defineProps<{
+const props = defineProps<{
     image: string,
     isShowing: boolean,
+    addToPublic?: boolean;
+    removeFromPublic?: boolean;
 }>()
 
 const emit = defineEmits(['update:modelValue']);
+
+const { addError } = useErrorStore();
+const { setLoading } = useLoading();
 
 const hideImage = () => {
     gsap.to(".image-container", {
@@ -50,6 +69,32 @@ const downloadImageBlob = async (url: string, filename: string) => {
     document.body.removeChild(link);
     URL.revokeObjectURL(blobUrl);
 };
+
+const updateUserIconContainer = async () => {
+    setLoading(true)
+    const data = await updateUserIcon(props.image);
+
+    if (data) addError('Icon changed', "success")
+    else addError("Unexpected error")
+
+    setLoading(false)
+}
+
+const addImageToPublicGalleryContainer = async () => {
+    setLoading(true);
+    const data = await addImageToPublicGallery(props.image);
+    if (data) addError('Successfuly', "success");
+    else addError("Unexpected error");
+    setLoading(false);
+}
+
+const removeImageFromPublicGalleryContainer = async () => {
+    setLoading(true);
+    const data = await removeImageFromPublicGallery(props.image);
+    if (data) addError('Successfuly', "success");
+    else addError("Unexpected error");
+    setLoading(false);
+}
 </script>
 
 <style>
@@ -74,10 +119,15 @@ const downloadImageBlob = async (url: string, filename: string) => {
 }
 .button-container {
     position: fixed;
-    right: 15px;
-    top: 15px;
     display: flex;
     gap: 15px;
+    top: 15px;
+}
+.left-button-container {
+    left: 15px;
+}
+.right-button-container {
+    right: 15px;
 }
 .button-container button {
     display: flex;

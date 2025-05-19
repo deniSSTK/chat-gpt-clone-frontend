@@ -8,6 +8,7 @@
         </div>
         <generated-image
             v-if="message.imageUrl"
+            :add-to-public="true"
             :image="message.imageUrl"/>
         <div class="container-message-content" :class="{user: message.role === 'user', assistant: message.role === 'assistant'}">
             <template v-for="(part, index) in splitContent(message.content)" :key="index">

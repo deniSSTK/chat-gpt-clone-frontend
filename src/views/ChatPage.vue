@@ -31,13 +31,18 @@
 <!--                            </label>-->
 <!--                        </div>-->
                     </div>
-                    <button :disabled="
+                    <div class="manipulate-buttons-container">
+                        <button @click="exportChat">
+                            <Icon icon="ic:baseline-download" width="60" height="60" />
+                        </button>
+                        <button :disabled="
                                 isGeneratingImage
                                 || loading
                                 || messages.length >= 2 && messages[messages.length - 1].generatingText"
-                            @click="generateChoose()">
-                        <Icon icon="line-md:arrow-up" width="60" height="60"/>
-                    </button>
+                                @click="generateChoose()">
+                            <Icon icon="line-md:arrow-up" width="60" height="60"/>
+                        </button>
+                    </div>
                 </div>
             </div>
         </div>
@@ -59,6 +64,7 @@ import Messages from "../components/Messages.vue";
 import Settings from "../components/Settings.vue";
 import ChatsPanel from "../components/ChatsPanel.vue";
 import {personalityStylesConfig} from "../config/botSettingsConfig.ts";
+import exportChatAsPDF from "../services/saveChatToPdf.ts"
 
 export interface iMessage {
     content: string;
@@ -95,7 +101,7 @@ onMounted(async () => {
     const data = await chatCheck(
         chatId
     )
-    if (!data && messages.value.length !== 1) await router.push('/c')
+    if (!data && messages.value.length !== 2) await router.push('/c')
 })
 
 watch(messages, async () => {
@@ -149,4 +155,8 @@ onMounted(async () => {
     );
     if (data.length !== 0 && !data.error) messages.value = [...messages.value, ...data];
 })
+
+const exportChat = () => {
+    exportChatAsPDF(messages.value)
+}
 </script>

@@ -29,6 +29,12 @@
                     >
                         General
                     </button>
+<!--                    <button class="settings-categories-button"-->
+<!--                            :class="chosenCategory === 'code-style' && 'chosen'"-->
+<!--                            @click="chosenCategory = 'code-style'"-->
+<!--                    >-->
+<!--                        Code Style-->
+<!--                    </button>-->
                     <button class="settings-categories-button"
                             :class="chosenCategory === 'information' && 'chosen'"
                             @click="chosenCategory = 'information'"
@@ -61,6 +67,20 @@
                             </div>
                     </div>
                     <UpdateInformation v-else-if="chosenCategory === 'information'"/>
+<!--                    <div v-else-if="chosenCategory === 'code-style'">-->
+<!--                        <CodeBlock highlighted-code-pref="dark"-->
+<!--                            :code="`console.log('This is light theme');`"-->
+<!--                            language="js"-->
+<!--                        />-->
+<!--                        <CodeBlock highlighted-code-pref="light"-->
+<!--                            :code="`console.log('This is light theme');`"-->
+<!--                            language="js"-->
+<!--                        />-->
+<!--                        <CodeBlock highlighted-code-pref="a11y"-->
+<!--                            :code="`console.log('This is light theme');`"-->
+<!--                            language="js"-->
+<!--                        />-->
+<!--                    </div>-->
                 </div>
             </div>
         </div>
@@ -84,7 +104,7 @@ import PersonalizationStyles from "./PersonalizationStyles.vue";
 const router = useRouter();
 
 const { setLoading } = useLoading();
-const { addError } = useErrorStore()
+const { addError } = useErrorStore();
 
 const showSettings = ref<boolean>(false);
 const loading = ref<boolean>(false);
@@ -134,3 +154,13 @@ const deleteChats = async () => {
     }
 }
 </script>
+
+<style scoped>
+.pre-container {
+    width: 90%;
+    margin: 0 auto;
+}
+.pre-title {
+    width: 90%;
+}
+</style>

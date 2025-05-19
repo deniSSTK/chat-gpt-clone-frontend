@@ -11,6 +11,7 @@
                  :key="n"
             />
             <GeneratedImage
+                :add-to-public="true"
                 v-for="(image, index) in images"
                 :image="image.imageUrl"
                 :key="index"/>

@@ -6,7 +6,13 @@
         @load="emit('loaded')"
         @click="isShowing = true"
     >
-    <FullScreenImage v-model="isShowing" :image="image" :is-showing="isShowing"/>
+    <FullScreenImage v-model="isShowing"
+                     :image="image"
+                     :is-showing="isShowing"
+                     :add-to-public="addToPublic"
+                     :remove-from-public="removeFromPublic"
+
+    />
 </template>
 
 <script setup lang="ts">
@@ -16,6 +22,8 @@ import FullScreenImage from "./FullScreenImage.vue";
 defineProps<{
     image: string;
     isShowingFirstValue?: boolean;
+    addToPublic?: boolean;
+    removeFromPublic?: boolean;
 }>();
 
 const emit = defineEmits<{

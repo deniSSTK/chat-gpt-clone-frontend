@@ -1,5 +1,5 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import { checkAuth } from "../services/authentication.ts";
+import {checkAuth, getUserId} from "../services/authentication.ts";
 import useErrorStore from "../use/useErrorStore.ts";
 
 const { addError } = useErrorStore();
@@ -33,6 +33,16 @@ const routes = [
         component: () => import('../views/Gallery.vue'),
     },
     {
+        path: '/p',
+        name: 'profile',
+        component: () => import('../views/Profile.vue'),
+    },
+    {
+        path: '/p/:id',
+        name: 'profile',
+        component: () => import('../views/Profile.vue'),
+    },
+    {
         path: '/:pathMatch(.*)*',
         name: 'not-found',
         component: () => import('../views/NotFoundPage.vue'),
@@ -56,6 +66,11 @@ router.beforeEach(async (to, _, next) => {
         // else if (!isMaintenance && to.name === 'maintenance') {
         //     return next('/c');
         // }
+
+        if (to.path === "/p") {
+            const userId = await getUserId()
+            return next(`/p/${userId}`)
+        }
 
         const isAuth = await checkAuth();
         if ((to.name === 'log-in' || to.name === 'sign-up') && isAuth) {
