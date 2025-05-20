@@ -32,10 +32,13 @@
 <!--                        </div>-->
                     </div>
                     <div class="manipulate-buttons-container">
+                        <button @click="">
+                            <Icon icon="humbleicons:share" width="60" height="60" />
+                        </button>
                         <button @click="exportChat">
                             <Icon icon="ic:baseline-download" width="60" height="60" />
                         </button>
-                        <button :disabled="
+                         <button :disabled="
                                 isGeneratingImage
                                 || loading
                                 || messages.length >= 2 && messages[messages.length - 1].generatingText"

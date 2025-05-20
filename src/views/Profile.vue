@@ -1,4 +1,7 @@
 <template>
+    <a href="/c" class="profile-back-button">
+        <Icon icon="material-symbols:close" width="30" height="30" />
+    </a>
     <div class="profile-page">
         <div class="profile-header">
             <div class="profile-user-section">
@@ -71,6 +74,7 @@ import {useRoute, useRouter} from "vue-router";
 import {getUserId, getUserProfileInfo} from "../services/authentication.ts";
 import useErrorStore from "../use/useErrorStore.ts";
 import gsap from "gsap";
+import {Icon} from "@iconify/vue";
 
 interface iImage {
     imageUrl: string;

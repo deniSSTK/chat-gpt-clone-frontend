@@ -116,6 +116,13 @@
     }
 }
 
+.profile-back-button {
+    position: fixed;
+    top: 15px;
+    left: 15px;
+    color: var(--white);
+}
+
 @keyframes show-image {
     from {
         opacity: 0;
