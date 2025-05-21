@@ -13,6 +13,11 @@ const routes = [
         component: () => import('../views/ChatPage.vue'),
     },
     {
+        path: '/share/:id',
+        name: "share-id",
+        component: () => import('../views/ChatPage.vue'),
+    },
+    {
         path: '/log-in',
         name: 'log-in',
         component: () => import('../views/LogInPage.vue'),

@@ -1,5 +1,12 @@
 <template class="app">
     <Settings />
+    <ShareChatController
+        v-if="isShareButtonOpened"
+        :key="shareKey"
+        :is-showing="true"
+        @update:modelValue="isShareButtonOpened = false"
+        :messages="messages"
+    />
     <div class="content">
         <ChatsPanel />
         <div class="chat">
@@ -7,7 +14,9 @@
                 <Messages
                     :visibleMessages="visibleMessages"/>
             </div>
-            <div class="container container-input">
+            <div class="container container-input"
+                 v-if="!isSharedChat"
+            >
                 <input
                     v-model="inputValue"
                     placeholder="Ask anything"
@@ -32,7 +41,7 @@
 <!--                        </div>-->
                     </div>
                     <div class="manipulate-buttons-container">
-                        <button @click="">
+                        <button @click="openShare">
                             <Icon icon="humbleicons:share" width="60" height="60" />
                         </button>
                         <button @click="exportChat">
@@ -58,7 +67,7 @@ import { useRoute, useRouter } from 'vue-router';
 import { computed, nextTick, ref, watch, onMounted } from "vue";
 
 import generateService from "../services/generate.ts";
-import { chatCheck, getAllMessages } from "../services/chats.ts";
+import {chatCheck, getAllMessages, getAllMessagesFromSharedChat} from "../services/chats.ts";
 import {getPersonalizationStyle} from "../services/personalization.ts";
 
 import '../css/page-chat.css';
@@ -68,6 +77,7 @@ import Settings from "../components/Settings.vue";
 import ChatsPanel from "../components/ChatsPanel.vue";
 import {personalityStylesConfig} from "../config/botSettingsConfig.ts";
 import exportChatAsPDF from "../services/saveChatToPdf.ts"
+import ShareChatController from "../components/ShareChatController.vue";
 
 export interface iMessage {
     content: string;
@@ -79,6 +89,9 @@ export interface iMessage {
 
 const chatId = useRoute().params.id as string;
 const router = useRouter();
+const route = useRoute();
+
+const isSharedChat = computed(() => route.path.startsWith("/share/"));
 
 const { generateImage, generateText } = generateService();
 
@@ -86,6 +99,8 @@ const inputValue = ref<string>("");
 const isGeneratingImage = ref<boolean>(false);
 const loading = ref<boolean>(false);
 const selectedMode = ref<'image' | 'reason' | null>(null);
+const isShareButtonOpened = ref<boolean>(false)
+const shareKey = ref<number>(0)
 
 const messagesContainerRef = ref<HTMLDivElement | null>(null);
 
@@ -99,13 +114,6 @@ const messages = ref<iMessage[]>([
 const visibleMessages = computed(() =>
     messages.value.filter(msg => msg.role !== 'system')
 );
-
-onMounted(async () => {
-    const data = await chatCheck(
-        chatId
-    )
-    if (!data && messages.value.length !== 2) await router.push('/c')
-})
 
 watch(messages, async () => {
     await nextTick();
@@ -152,12 +160,29 @@ onMounted(async () => {
     if (personalizationStyle) {
         messages.value.unshift({role: 'system', content: personalityStylesConfig[personalizationStyle]})
     }
-    const data = await getAllMessages(
-        chatId,
-        loading
-    );
+
+    let data;
+
+    if (isSharedChat.value) {
+        data = await getAllMessagesFromSharedChat(chatId);
+    } else {
+        const chatCheckData = await chatCheck(
+            chatId
+        )
+        if (!chatCheckData && messages.value.length !== 2) await router.push('/c')
+
+        data = await getAllMessages(chatId, loading);
+    }
     if (data.length !== 0 && !data.error) messages.value = [...messages.value, ...data];
 })
+
+const openShare = () => {
+    isShareButtonOpened.value = false;
+    nextTick(() => {
+        shareKey.value = Date.now();
+        isShareButtonOpened.value = true;
+    });
+}
 
 const exportChat = () => {
     exportChatAsPDF(messages.value)

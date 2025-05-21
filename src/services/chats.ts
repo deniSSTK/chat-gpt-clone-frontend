@@ -166,11 +166,59 @@ const getAllImages = async () => {
     return await response.json();
 };
 
+const shareChat = async (messages: iMessage[]) => {
+    try {
+        const response = await fetch(`${import.meta.env.VITE_NEST_API_URL}/chats/add-share-chat`, {
+            method: 'POST',
+            credentials: 'include',
+            headers: {
+                "Content-Type": "application/json",
+                'accept': 'application/json',
+            },
+            body: JSON.stringify({
+                messages
+            })
+        })
+
+        if (!response.ok) {
+            const errData = await response.json();
+            throw new Error(errData.message || 'Something went wrong');
+        }
+
+        return await response.json();
+    } catch(error: any) {
+        addError(error.message);
+    }
+}
+
+const getAllMessagesFromSharedChat = async (chatId: string) => {
+    try {
+        const response = await fetch(`${import.meta.env.VITE_NEST_API_URL}/chats/get-all-share-chat-messages/${chatId}`, {
+            method: 'GET',
+            headers: {
+                "Content-Type": "application/json",
+                'accept': 'application/json',
+            }
+        })
+
+        if (!response.ok) {
+            const errData = await response.json();
+            throw new Error(errData.message || 'Something went wrong');
+        }
+
+        return await response.json();
+    } catch (error: any) {
+        addError(error.message);
+    }
+}
+
 export {
     getAllMessages,
     getChats,
     saveMessage,
     chatCheck,
     deleteUserChats,
-    getAllImages
+    getAllImages,
+    shareChat,
+    getAllMessagesFromSharedChat
 };
