@@ -131,6 +131,6 @@ onMounted(async () => {
 })
 
 const copyToClipboard = async () => {
-    await navigator.clipboard.writeText(pageUserId);
+    await navigator.clipboard.writeText(`http://localhost:5173/p/${pageUserId}`);
 };
 </script>

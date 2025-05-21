@@ -67,6 +67,22 @@
     color: var(--purple-light);
 }
 
+.chosen.snoop-dogg {
+    background-color: var(--white);
+    color: var(--black);
+}
+
+.snoop-dogg {
+    background: none;
+    border: 2px solid var(--black);
+    color: var(--black);
+}
+
+.snoop-dogg img {
+    width: 24px;
+    height: 24px;
+}
+
 @keyframes show-styles-info {
     from {
         opacity: 0;

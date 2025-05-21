@@ -43,6 +43,13 @@
                 <Icon icon="mdi:wand" width="24" height="24" />
                 <span>Chaotic</span>
             </div>
+            <div class="style-icon snoop-dogg"
+                 @click="changeStyle('snoopDogg')"
+                 :class="chosenStyle === 'snoopDogg' && 'chosen'"
+            >
+                <img src="/snoop-dogg.svg" alt=""/>
+                <span>Snoop dogg</span>
+            </div>
         </div>
         <div v-if="showInfo">
             Refresh chat or <a href="/c">Create New</a>

@@ -30,7 +30,7 @@ const iframeRef = ref<HTMLIFrameElement | null>(null);
 
 const getThemeHref = (theme: string) => {
     const themes: Record<string, string> = {
-        dark: 'https://cdn.jsdelivr.net/npm/highlight.js@11.9.0/styles/atom-one-dark-reasonable.min.css',
+        dark: 'https://cdn.jsdelivr.net/npm/highlight.js@11.9.0/styles/atom-one-dark.css',
         light: 'https://cdn.jsdelivr.net/npm/highlight.js@11.9.0/styles/github.min.css',
         dracula: 'https://cdn.jsdelivr.net/npm/highlight.js@11.9.0/styles/a11y-dark.min.css',
     };
@@ -52,7 +52,7 @@ const highlightCode = () => {
         doc.write(`
   <html>
     <head>
-      <link rel="stylesheet" href="${getThemeHref(props.highlightedCodePref || 'dracula')}">
+      <link rel="stylesheet" href="${getThemeHref('dark')}">
       <style>
         body {
           margin: 0;
