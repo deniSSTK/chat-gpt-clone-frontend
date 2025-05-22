@@ -7,11 +7,11 @@
             <Icon icon="material-symbols:close" width="24" height="24" />
         </button>
         <div class="information-container">
-            <div>http://localhost:5173/share/{{shareLink.id}}</div>
+            <div>{{baseUrl}}/share/{{shareLink.id}}</div>
             <button class="copy-button"
                     @click="copyToClipboard">Copy</button>
             <a class="copy-button open"
-               :href="`http://localhost:5173/share/${shareLink.id}`"
+               :href="`${baseUrl}/share/${shareLink.id}`"
                 target="_blank"
             >Open</a>
         </div>
@@ -37,6 +37,7 @@ const { addError } = useErrorStore();
 const { setLoading } = useLoading();
 
 const shareLink = ref<{ id: string }>({id: ''});
+const baseUrl = window.location.origin;
 
 const hideContainer = () => {
     gsap.to(".share-container", {
@@ -59,7 +60,7 @@ onMounted(async () => {
 })
 
 const copyToClipboard = async () => {
-    await navigator.clipboard.writeText(`http://localhost:5173/share/${shareLink.value.id}`);
+    await navigator.clipboard.writeText(`${baseUrl}/share/${shareLink.value.id}`);
 };
 
 </script>

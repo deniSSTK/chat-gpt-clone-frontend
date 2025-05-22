@@ -80,9 +80,10 @@ interface iImage {
     imageUrl: string;
 }
 
-const route = useRoute()
-const router = useRouter()
+const route = useRoute();
+const router = useRouter();
 const pageUserId = route.params.id as string;
+const baseUrl = window.location.origin;
 
 const loading = ref<boolean>(true);
 const canEditPage = ref<boolean>(false);
@@ -131,6 +132,6 @@ onMounted(async () => {
 })
 
 const copyToClipboard = async () => {
-    await navigator.clipboard.writeText(`http://localhost:5173/p/${pageUserId}`);
+    await navigator.clipboard.writeText(`${baseUrl}/p/${pageUserId}`);
 };
 </script>
