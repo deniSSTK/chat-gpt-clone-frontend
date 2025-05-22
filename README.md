@@ -6,17 +6,15 @@ This is the **frontend** of a full-featured ChatGPT clone built using **Vue 3**.
 
 ---
 
-## 🚀 Live Preview
+## 🎥 Demo Video
 
-Explore the frontend in action (read-only demo):
+Because the backend is running on free-tier servers, it may work slowly or be unstable at times.
 
-🔗 [chat-gpt-clone-frontend.vercel.app](https://chat-gpt-clone-frontend.vercel.app)
+👉 To see how everything works properly, **check out the full YouTube video overview**:  
+📺 [Watch on YouTube](https://www.youtube.com/watch?v=your_video_id)
 
-> ⚠️ This is a preview version intended for showcasing the UI and basic functionality.  
-> Please note: The backend services are hosted on **low-power free-tier servers**, so some responses (especially image generation or first-time requests) may take a while to load.
-
-🔗 Project Repository: [chat-gpt-clone-frontend](https://github.com/deniSSTK/chat-gpt-clone-frontend)
-
+You can also try the app yourself:  
+🔗 [Live Demo](https://chat-gpt-clone-frontend.vercel.app)
 
 ## ✨ Features
 
@@ -126,3 +124,4 @@ This project is distributed under the MIT License. Feel free to explore and buil
 
 ## 🙌 Author
 Made with ♥ by [DeniSSTK](https://github.com/deniSSTK)
+🔗 Project Repository: [chat-gpt-clone-frontend](https://github.com/deniSSTK/chat-gpt-clone-frontend)
