@@ -6,14 +6,14 @@ This is the **frontend** of a full-featured ChatGPT clone built using **Vue 3**.
 
 ---
 
-## 🌐 Live Demo
+## 🚀 Live Preview
 
-You can try the frontend here (for demo/testing purposes only):
+Explore the frontend in action (read-only demo):
 
-🔗 [chat-gpt-clone-frontend.vercel.app](https://image-generator-woad-five.vercel.app/)
+🔗 [chat-gpt-clone-frontend.vercel.app](https://chat-gpt-clone-frontend.vercel.app)
 
-> Note: This is a **demo** version of the frontend. Backend APIs are hosted separately and may have limited availability or rate limits.
-
+> ⚠️ This is a preview version intended for showcasing the UI and basic functionality.  
+> Please note: The backend services are hosted on **low-power free-tier servers**, so some responses (especially image generation or first-time requests) may take a while to load.
 
 🔗 Project Repository: [chat-gpt-clone-frontend](https://github.com/deniSSTK/chat-gpt-clone-frontend)
 
