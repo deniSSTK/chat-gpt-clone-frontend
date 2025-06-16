@@ -6,12 +6,12 @@ This is the **frontend** of a full-featured ChatGPT clone built using **Vue 3**.
 
 ---
 
-## 🎥 Demo Video
+## 🎥 Demo Video (NOT YET!!!!!!!!!!!)
 
 Because the backend is running on free-tier servers, it may work slowly or be unstable at times.
 
 👉 To see how everything works properly, **check out the full YouTube video overview**:  
-📺 [Watch on YouTube](https://www.youtube.com/watch?v=your_video_id)
+📺 [Watch on YouTube]()
 
 You can also try the app yourself:  
 🔗 [Live Demo](https://chat-gpt-clone-frontend.vercel.app)
