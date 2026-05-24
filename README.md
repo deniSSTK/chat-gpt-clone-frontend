@@ -1,3 +1,5 @@
+# Repository moved to [deniSSTK/chat-gpt-clone](https://github.com/deniSSTK/chat-gpt-clone)
+
 # 🧠 ChatGPT Clone – Vue Frontend
 
 This is the **frontend** of a full-featured ChatGPT clone built using **Vue 3**. It replicates and expands on OpenAI's ChatGPT functionality by adding custom features like image generation, profile systems, and chat sharing. It communicates with separate backend services via API (NestJS and Python-based).
